@@ -1,0 +1,21 @@
+sudo: false
+language: python
+python:
+  - 2.7
+  - &mainstream_python 3.6
+install:
+  - make install_dev
+cache:
+  - pip
+script:
+  - make test
+deploy:
+  provider: pypi
+  user: user2589
+  password:
+    secure: cwyV16fyszLTxqMCqCEDc0Zon+rAjpOtSBD+sYodBaN6d8xhkBHREa/KktolywJEcZsRm4ZbEGaaBiFMDvkZ+QZ/5gljdRf+NRAxItnyimJTYin2MUUiYMU72styU64KL8LezMu53nvbwwiI4NAK+Cq6KgmtoAbn5FkItAXNOfeVGuoo6s6Vga88Q0s1Ah9lwFz6MvyFgyxuf1y+RMuev3Xo5OhVPrP+BCLsWGX6Tqn2eCR7Uf/eYUDG0dJcQqJv1aeYwcOn6NvVQRmhFiOhXrIcz777XHoEurBwxO4KRaqpTZ6kVSfPdyDDs7XDhyTF8duz0U3p+kKN7nUwFRuF4qVF5nZJX2hyd6N+FD4fhTKtbWGs0HNgODyBABk/V2cUCpO/HCy/a34B7xDM4lJQEgu3stNZ9JCq+I7aMc/Ssf9byLX1UWHP7O8TSX78NqZNhoCNveZL71Y/kw+oQlPD0SiOZt3GL9sWIIBXN2UeDWP1Wpp/zrKg3FaPwCctbwDSDZbBriC2C2YkCQ6R9v59/w54nfI79i8AGWDd1zc9FfwCdvAfythcxCWRSxPGC1Jp/n6aXx5j4eayy6eU63lYTe80Jh9J8pNjRvWUiGXz/PSr/hrKf419ulfTvhZyqseU1HOD7RNIQiBpWoIdpMkCNVJAOFNshUnczd3ZNqWCbtA=
+  distributions: sdist bdist_wheel
+  on:
+    tags: true
+    all_branches: true
+    python: *mainstream_python
