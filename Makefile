@@ -1,6 +1,5 @@
 
-PACKAGE = strudel.scraper
-TESTROOT = stscraper
+PACKAGE = strudel.ghutils
 
 .PHONY: test
 test:
@@ -27,5 +26,5 @@ html:
 
 .PHONY: install_dev
 install_dev:
-	pip install --user --upgrade -r requirements.txt
-	pip install --user --upgrade sphinx sphinx-autobuild
+	pip install -r requirements.txt
+	pip install sphinx sphinx-autobuild

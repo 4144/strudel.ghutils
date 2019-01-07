@@ -1,6 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 
+"""
+This module provides interfaces to "unofficial GitHub API".
+Some
+
+- get user contributions timeline
+- user contribution stats
+    (crude but fast version of the contributions timeline)
+- get project weekly contributors stats
+
+"""
+
 from __future__ import print_function
 
 import argparse
@@ -21,6 +32,9 @@ import feedparser
 import pandas as pd
 import requests
 
+__version__ = "0.0.1"
+__author__ = "Marat (@cmu.edu)"
+__license__ = "GPL v3"
 
 BASE_URL = 'https://github.com'
 HEADERS = {   # browser headers for non-API URLs
@@ -197,6 +211,7 @@ def parse_month(bs4_tree):
 
 
 def guard(func):
+    # TODO: once released in stutils, reuse from there
     semaphore = threading.Lock()
 
     @wraps(func)
