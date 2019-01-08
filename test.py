@@ -1,18 +1,21 @@
 #!/usr/bin/env python
 
+import csv
 import json
 import os
 from typing import Generator
 import unittest
 
-from stgithub import *
+from bs4 import BeautifulSoup
+import pandas as pd
+import stgithub
 
 
 class TestGitHub(unittest.TestCase):
 
     def setUp(self):
         self.fixtures_dir = 'fixtures'
-        self.scraper = Scraper()
+        self.scraper = stgithub.Scraper()
         self.repo_slug = 'pandas-dev/pandas'
         self.user = 'user2589'
 
@@ -31,12 +34,12 @@ class TestGitHub(unittest.TestCase):
 
     def test_normalize_text(self):
         self.assertEqual(
-            normalize_text("\nHello   world  \t\n!"), 'Hello world !')
+            stgithub.normalize_text("\nHello   world  \t\n!"), 'Hello world !')
 
     def test_extract_repo(self):
-        self.assertEqual(extract_repo("/org/repo"), 'org/repo')
+        self.assertEqual(stgithub.extract_repo("/org/repo"), 'org/repo')
         self.assertEqual(
-            extract_repo("/org/repo/blabla?something=foo"), 'org/repo')
+            stgithub.extract_repo("/org/repo/blabla?something=foo"), 'org/repo')
 
     def test_parse_record(self):
         fixtures_dir = os.path.join(self.fixtures_dir, 'record')
@@ -51,7 +54,8 @@ class TestGitHub(unittest.TestCase):
                 input_text = fh.read()
 
             tree = BeautifulSoup(input_text, 'html.parser')
-            self.assertDictEqual(expected_result, parse_record(tree))
+            self.assertDictEqual(
+                expected_result, stgithub._parse_timeline_update_record(tree))
 
     def test_parse_month(self):
         fixtures_dir = os.path.join(self.fixtures_dir, 'month')
@@ -63,15 +67,12 @@ class TestGitHub(unittest.TestCase):
                 input_text = fh.read()
 
             tree = BeautifulSoup(input_text, 'html.parser')
-            result = parse_month(tree)
+            result = stgithub._parse_timeline_update(tree)
             self.assertIsInstance(result, Generator)
-            chunk = next(result)
+            month, chunk = next(result)
+            self.assertIsInstance(month, str)
             self.assertIsInstance(chunk, dict)
-            self.assertEqual(len(chunk), 1)
-            key = chunk.keys()[0]
-            self._test_datestring(key, True)
-            value = chunk[key]
-            self.assertIsInstance(value, dict)
+            self._test_datestring(month, True)
 
     def test_project_contributor_stats(self):
         stats = self.scraper.project_contributor_stats(self.repo_slug)
@@ -104,6 +105,25 @@ class TestGitHub(unittest.TestCase):
     def test_full_user_activity_timeline(self):
         gen = self.scraper.full_user_activity_timeline(self.user)
         self.assertIsInstance(gen, Generator)
+        # postpone test on full timeline until the end
+
+        results = pd.DataFrame(
+            self.scraper.full_user_activity_timeline(
+                self.user, '2017-06', '2017-06-30')
+        ).set_index(['month', 'repo'])
+        self.assertSetEqual({'commits', 'issues'}, set(results.columns))
+        self.assertSetEqual(
+            {'user2589/ghd', 'user2589/csi-project'}, set(results.index.levels[1]))
+
+        results = pd.DataFrame(
+            self.scraper.full_user_activity_timeline(
+                self.user, '2017-07', '2017-07-31')
+        ).set_index(['month', 'repo'])
+        self.assertSetEqual(
+            {'commits', 'created_repository'}, set(results.columns))
+        self.assertSetEqual({'user2589/ghd'}, set(results.index.levels[1]))
+
+        # get the full timeline
         results = list(gen)
         self.assertGreater(len(results), 50)
 

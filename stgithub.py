@@ -16,7 +16,6 @@ from __future__ import print_function
 
 import argparse
 from collections import defaultdict
-import csv
 import datetime
 from functools import wraps
 import logging
@@ -24,6 +23,7 @@ import re
 import six  # Queue
 import threading
 import time
+from typing import *
 import warnings
 from xml.etree import ElementTree
 
@@ -74,30 +74,41 @@ def extract_repo(link):
     return "/".join(link.strip("/").split("/", 2)[:2])
 
 
-def parse_record(record_div):
+def _parse_timeline_update_record(record_div):
+    # type(BeautifulSoup) -> dict
     """
-    :param record_div: a BS4 HTML element object, 
-        representing one chunk of GitHub user activity.
-        Usually it's 
-    :return: a dictionary of activities 
+    Args:
+        record_div(BeautifulSoup): a BS4 HTML element object,
+            representing one chunk of GitHub user activity.
+    Returns:
+        Dict[str, Dict[str, int]]: {
+            repository1: {
+                'commits': ...,
+                'issues': ...,
+                'pull_requests': ...,
+                'reviews': ...,
+                'created_repository': {0|1},
+            }
+        }
     """
     # Note: GitHub lists only first 25 repos for each activity
     # data[repo][activity] = <number>
-    data = defaultdict(lambda: defaultdict(int))
+    record_data = defaultdict(lambda: defaultdict(int))
 
     # get record title:
     if record_div.button:
         # created commits, repositories, issues,
         # reviewed pull requests
         title = normalize_text(record_div.button.text)
-        if re.match('Reviewed \\d+ pull requests? in \\d+ repositor(y|ies)',
-                    title):
+        if re.match(
+                'Reviewed \\d+ pull requests? in \\d+ repositor(y|ies)', title):
+
             for repo_div in record_div.find_all(
                     'div', class_='profile-rollup-summarized'):
                 repo_span, count_span = repo_div.button.find_all('span')
                 repo = repo_span.text
                 count = int(count_span.text.split()[0])
-                data[repo]['reviews'] += count
+                record_data[repo]['reviews'] += count
 
         elif re.match('Opened \\d+ (?:other )?issues? in \\d+ repositor(y|ies)',
                       title):
@@ -109,15 +120,15 @@ def parse_record(record_div):
                     'span', recursive=False)[0]
                 for span in count_span.find_all('span'):
                     count += int(span.text)
-                data[repo]['issues'] += count
+                record_data[repo]['issues'] += count
 
         elif re.match('Created \\d+ repositor(y|ies)', title):
-            for link in record_div.find_all('a'):
-                data[link.text]['created_repository'] = 1
+            for link in record_div.find_all(
+                    'a', attrs={'data-hovercard-type': "repository"}):
+                record_data[link.text]['created_repository'] = 1
 
-        elif re.match(
-                'Opened \\d+ (?:other )?pull requests? in \\d+ repositor(y|ies)',
-                title):
+        elif re.match('Opened \\d+ (?:other )?pull requests? '
+                      'in \\d+ repositor(y|ies)', title):
             for repo_div in record_div.find_all(
                     'div', class_='profile-rollup-summarized'):
                 repo = repo_div.button.div.span.text
@@ -126,7 +137,7 @@ def parse_record(record_div):
                     0]
                 for span in count_span.find_all('span'):
                     count += int(span.text)
-                data[repo]['pull_requests'] += count
+                record_data[repo]['pull_requests'] += count
 
         elif re.match('Created \\d+ commits? in \\d+ repositor(y|ies)', title):
             for repo_li in record_div.ul.find_all('li', recursive=False):
@@ -136,7 +147,7 @@ def parse_record(record_div):
                 repo_link = li_div.find_all('a', recursive=False)[1]
                 repo = extract_repo(repo_link["href"])
                 count = int(repo_link.text.strip().split(" ")[0])
-                data[repo]['commits'] += count
+                record_data[repo]['commits'] += count
 
         else:
             raise ValueError("Unexpected title: %s\n%s"
@@ -146,23 +157,23 @@ def parse_record(record_div):
         title = normalize_text(record_div.h4.text)
         repo = record_div.h4.a and record_div.h4.a.text
         if title.startswith("Created an issue in"):
-            data[repo]['issues'] += 1
+            record_data[repo]['issues'] += 1
         elif title.startswith("Joined the"):
-            data[record_div.a['href'].strip('/')]['joined_org'] = 1
+            record_data[record_div.a['href'].strip('/')]['joined_org'] = 1
         elif title.startswith("Created a pull request in"):
             # fist PR in a given month
-            data[repo]['pull_requests'] += 1
+            record_data[repo]['pull_requests'] += 1
         elif title == "Joined GitHub":
             pass
         elif title.startswith("Opened their first issue on GitHub in"):
-            data[repo]['issues'] += 1
+            record_data[repo]['issues'] += 1
         elif title.startswith("Opened their first pull request on GitHub in"):
-            data[repo]['pull_requests'] += 1
+            record_data[repo]['pull_requests'] += 1
         elif title.startswith("Created their first repository"):
             link = record_div.find_all(
                 'a', attrs={'data-hovercard-type': "repository"})[0]
             repo = extract_repo(link.get('href'))
-            data[repo]['created_repository'] = 1
+            record_data[repo]['created_repository'] = 1
         else:
             raise ValueError("Unexpected title: " + title)
 
@@ -170,44 +181,58 @@ def parse_record(record_div):
         # private activity
         title = normalize_text(record_div.find_all('span')[1].text)
         if title.endswith(' in private repositories'):
-            data[None]['private_contrib'] += int(title.split(" ", 1)[0])
+            record_data[None]['private_contrib'] += int(title.split(" ", 1)[0])
         else:
             raise ValueError("Unexpected title: " + title)
     else:
         raise ValueError("Unexpected activity:" + str(record_div))
 
-    # convert to dict
-    return {repo: dict(activities) for repo, activities in data.items()}
+    # convert defaultdict to dict
+    return {rep: dict(activities) for rep, activities in record_data.items()}
 
 
-def parse_month(bs4_tree):
-    """ parse a chunk of activity acquired via Ajax, usually one month.
+def _parse_timeline_update(bs4_tree):
+    # type(BeautifulSoup) -> tuple
+    """ Parse a chunk of activity acquired via Ajax, usually one month.
+
+    Returns:
+        Generator[Tuple[str, Dict[str, int]]]:
+            (month, {output of parse_record()})
 
     <div class="contribution-activity-listing">  # month div
         <div class="profile-timeline discussion-timeline">  # one extra wrapper
             <h3>  # month title
             <div class="profile-rollup-wrapper">  # record divs
             ...
+
+    Terminology:
+        timeline consists of updates
+        updates contain one or more months. Only one month is non-empty
+        month cosists of records - a single chunk of reported activity
+        record might contain information about several repositories,
+            e.g. Created N commits in M repositories
     """
     # sometimes next chunk includes several months.
     # In these cases, all except one are empty;
     # often empty "months" represent ranges, e.g. April 2018 - December 2018
     # to handle such cases, month is lazily evaluated
-    month = None
-    for month_record in bs4_tree.find_all("div", class_="profile-timeline"):
-        data = {}
-        for record in month_record.find_all("div", class_="profile-rollup-wrapper"):
-            parsed_record = parse_record(record)
+    for month_div in bs4_tree.find_all("div", class_="profile-timeline"):
+        record_month = None
+        month_data = {}
+        for record_div in month_div.find_all("div", class_="profile-rollup-wrapper"):
+            parsed_record = _parse_timeline_update_record(record_div)
             if not parsed_record:  # ignore empty months
                 continue
-            for repo, activity in parsed_record.items():
-                if repo not in data:
-                    data[repo] = {}
-                data[repo].update(activity)
-            month = month or pd.to_datetime(month_record.h3.text.strip()).strftime('%Y-%m')
-        if data:
-            yield {month: data}
-        month = None
+            for record_repo, record_activity in parsed_record.items():
+                if record_repo not in month_data:
+                    month_data[record_repo] = {}
+                # we might have several activities in the same record repository
+                # in a given month, e.g. issues, PRs and commits
+                month_data[record_repo].update(record_activity)
+            record_month = record_month or pd.to_datetime(
+                month_div.h3.text.strip()).strftime('%Y-%m')
+        if month_data:
+            yield record_month, month_data
 
 
 def guard(func):
@@ -348,7 +373,7 @@ class Scraper(object):
                 (<%Y-%m-%d date>, link to the activity)
                 It seems like this feed only includes tags and commits
 
-        >>> list(links_to_recent_user_activity('user2589'))
+        >>> list(Scraper().links_to_recent_user_activity('user2589'))
         [('2018-12-01', '/user2589/Q/tree/master'),
          ('2018-12-01'),
           '/user2589/Q/commit/9184f20f939a70e3930ef762cc83906220433fc8'),
@@ -400,16 +425,43 @@ class Scraper(object):
                     for ts, link in extract_links(chunk['value'].encode('utf8')):
                         yield ts.strftime("%Y-%m-%d"), link
 
-    def full_user_activity_timeline(self, user, to=None):
-        now = (to or datetime.datetime.now()).strftime('%Y-%m-%d')
+    def full_user_activity_timeline(self, user, start=None, to=None):
+        # type: (str, Optional[str], Optional[str]) -> Generator[Tuple[str, Dict]]
+        """
+        >>> pd.DataFrame(
+        ...     stgithub.Scraper().full_user_activity_timeline(
+        ...              'user2589', start='2017-01', to='2017-08')
+        ... ).set_index(['month', 'repo'])
+                                    commits  created_repository  pull_requests
+        month   repo
+        2019-01 ssc-oscar/oscar.py      1.0                 NaN            NaN
+                bagrat/pylease          NaN                 NaN            1.0
+                user2589/pylease        NaN                 1.0            NaN
+        """
+        if start:
+            if not isinstance(start, datetime.datetime):
+                start = pd.to_datetime(start)
+            start = start.strftime('%Y-%m')
+        if to:
+            if not isinstance(to, datetime.datetime):  # str or unicode
+                to = pd.to_datetime(to)
+            now = to.strftime('%Y-%m-%d')
+        else:
+            now = datetime.datetime.now().strftime('%Y-%m-%d')
+
         url = '/%s?tab=overview&include_header=no&utf8=✓&from=%s&to=%s' % (
             user, now[:8] + '01', now)
 
         while True:
             soup = BeautifulSoup(self._request(url).text, 'html.parser')
             for month_div in soup.find_all('div', class_='contribution-activity-listing'):
-                for parsed_month in parse_month(month_div):
-                    yield parsed_month
+                for month, data in _parse_timeline_update(month_div):
+                    if start and month < start:
+                        return
+                    for repo, activity in data.items():
+                        activity['repo'] = repo
+                        activity['month'] = month
+                        yield activity
             form = soup.form
             if not form:
                 break
@@ -423,6 +475,10 @@ if __name__ == '__main__':
         description="Get a user contribution timeline")
     parser.add_argument('user', type=str,
                         help='GitHub login of the user to parse')
+    parser.add_argument('--from', type=str, nargs='?',
+                        help='Lower end of the date range, default: no limit')
+    parser.add_argument('--to', type=str, nargs='?',
+                        help='Upper end of the date range, default: now')
     parser.add_argument('-o', '--output', default="-",
                         type=argparse.FileType('w'),
                         help='Output filename, "-" or skip for stdin')
@@ -436,17 +492,6 @@ if __name__ == '__main__':
     COLUMNS = ('commits', 'issues', 'pull_requests', 'reviews',
                'private_contrib', 'created_repository', 'joined_org')
 
-    writer = csv.DictWriter(args.output, ('month',) + COLUMNS)
-    writer.writeheader()
-
-    scraper = Scraper()
-
-    for record in scraper.get_timeline(args.user):
-        for month, repos in record.items():
-            data = defaultdict(int)
-            for repo, activities in repos.items():
-                for activity, count in activities.items():
-                    data[activity] += count
-
-            data['month'] = month
-            writer.writerow(data)
+    df = pd.DataFrame(Scraper().full_user_activity_timeline(args.user)
+                      ).set_index(['month', 'repo']).fillna(0).astype(int)
+    df.to_csv(args.output)
