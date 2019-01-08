@@ -5,13 +5,12 @@ PACKAGE = strudel.ghutils
 test:
 	python -m unittest test
 
-.PHONY: publish
-publish:
+.PHONY: build
+build:
 	$(MAKE) clean
 	$(MAKE) test
 	python setup.py sdist bdist_wheel
-	twine upload dist/*
-	$(MAKE) clean
+	# twine upload dist/*  # handled by semantic-release in this package
 
 .PHONY: clean
 clean:
