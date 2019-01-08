@@ -2,13 +2,28 @@
 # -*- coding: utf8 -*-
 
 """
-This module provides interfaces to "unofficial GitHub API".
-Some
+This module provides interfaces to "unofficial GitHub API",
+i.e. data available in the user interface but not in the official API.
 
-- get user contributions timeline
-- user contribution stats
-    (crude but fast version of the contributions timeline)
-- get project weekly contributors stats
+This includes:
+
+- user contributions timeline (all repositories contributed to,
+    organizations joined publicly, created repos, reported issues, etc.).
+    There is no official API for this, and public datasets like GHTorrent
+    do not report some of these events.
+- user contribution stats (just number of contributions per year).
+    You can get the same information from GHTorrent,
+    but this method is only taking one HTTP request and thus it's much faster.
+- get weekly contributors stats for a projects
+    (number of Lines Of Code contributed per week by top 100 contributors
+    since the beginning of the project).
+    LOC information is not available via API, and similar stats for commits take
+    multiple requests via official API.
+
+
+.. autoclass:: Scraper
+    :members: full_user_activity_timeline, project_contributor_stats,
+        user_daily_contrib_num, links_to_recent_user_activity
 
 """
 
@@ -251,7 +266,18 @@ def guard(func):
 
 
 class Scraper(object):
+    """ A class to access "unofficial GitHub API"
 
+    .. note::
+        This "unofficial API" is rate limited, just as the official one.
+        The rate limit is 40 requests in 80 seconds, and some calls take
+        multiple requests. So, for example, parsing a user activity timeline
+        typically takes couple minutes.
+        Use this "API" with caution as it might be extremely slow.
+
+    This class provides access to several functions available
+
+    """
     _instance = None  # singleton instance
     cookies = None  # cookies for non-API URLs
     # limit is imposed if over 40 requests are made in 80 seconds
@@ -321,7 +347,8 @@ class Scraper(object):
           u'weeks': [{u'a': 0, u'c': 0, u'd': 0, u'w': 1249171200},
            {u'a': 0, u'c': 0, u'd': 0, u'w': 1249776000},
            {u'a': 0, u'c': 0, u'd': 0, u'w': 1250380800},
-        ...}]
+        ...
+        }]
         """
         return self._request("/%s/graphs/contributors-data" % repo_slug).json()
 
@@ -331,18 +358,17 @@ class Scraper(object):
         This method represents the white and green grid in the profile page.
 
         Args:
-            user (str): The GitHub login of the user.
+            user (str): The GitHub login of the user to get stats for.
             year (int): Year of contributions to get
 
         Returns:
-            dict: A dictionary with keys being %Y-%m-%d formatted dates and
+            dict: A dictionary with keys being %Y-%m-%d formatted dates, and
                 values being the number of contributions. This method does not
-                differentiate different types of contributions, so it is a sum
-                of commits, issues, submitted/reviewed pull requests etc.
+                differentiate types of contributions, i.e. it is a sum
+                of commits, issues, submitted and reviewed pull requests, etc.
 
         >>> Scraper().user_daily_contrib_num('user2589', 2018)
-        {'2017-12-31': 0,
-         '2018-01-01': 0,
+        {'2018-01-01': 0,
          '2018-01-02': 15,
          ...
          '2018-12-31': 0}
@@ -364,6 +390,11 @@ class Scraper(object):
         Internally, this method is using Atom feed.
         The result includes up to couple month of activity;
         sometimes it also misses up to one month of recent events.
+
+        .. note::
+            This method is know to return incomplete data.
+            Proceed with caution.
+
 
         Args:
             user (str): The GitHub login of the user.
@@ -427,16 +458,62 @@ class Scraper(object):
 
     def full_user_activity_timeline(self, user, start=None, to=None):
         # type: (str, Optional[str], Optional[str]) -> Generator[Tuple[str, Dict]]
-        """
+        """ Get a list of public user contributions, by month by repository.
+
+        Args:
+            user (str): GitHub login of the user to get activity for.
+            start (str): date to start with, e.g. '2017-01' or '2017-01-01'.
+                `datetime` objects should also work.
+            to (str): upper bound of date ranges to parse, same as `start`.
+                **Note**: the day is 1 by default, i.e. '2017-01'
+                will be interpreted as **1st** of January 2017.
+        Returns:
+            Generator[Dict[str, int]]:
+                A generator of activity dictionaries.
+                Each dict has fields `month`, a `%Y-%m` formatted month, and
+                `repo`, a repository slug. Other fields indicate number of
+                contributions of a given type:
+
+                - `commits`: number of commits.
+                - `issues`: number of reported issues.
+                - `reviews`: number of reviewed pull requests.
+                    GitHub counts any commented pull request as reviewed,
+                    also ignoring any code comments.
+                - `pull_requests`: number of pull requsts submitted.
+                - `created_repository`: can be only 1.
+                - `joined_org`: can be only 1.
+                    The repository slug in this case is the GitHub org name.
+                - `private`: all contributions in private repositories combined,
+                    if user enabled anonymous reporting of private activities.
+                    The repository slug in this case is an empty string.
+
+        The output of this method is suitable for a pd.DataFrame constructor:
+
         >>> pd.DataFrame(
-        ...     stgithub.Scraper().full_user_activity_timeline(
-        ...              'user2589', start='2017-01', to='2017-08')
-        ... ).set_index(['month', 'repo'])
-                                    commits  created_repository  pull_requests
-        month   repo
-        2019-01 ssc-oscar/oscar.py      1.0                 NaN            NaN
-                bagrat/pylease          NaN                 NaN            1.0
-                user2589/pylease        NaN                 1.0            NaN
+        ...     Scraper().full_user_activity_timeline('user2589'))
+             commits   ...     reviews
+        ...
+        111      NaN   ...         NaN
+        112      NaN   ...         NaN
+        113      1.0   ...         NaN
+        <BLANKLINE>
+        [114 rows x 9 columns]
+
+        It is even better to index on month+repo and replace NaNs:
+
+        >>> pd.DataFrame(
+        ...     Scraper().full_user_activity_timeline('user2589')
+        ... ).set_index(['month', 'repo']).fillna(0).astype(int)
+                                                 commits   ...     reviews
+        month   repo                                       ...
+        ...
+        2012-05 user2589/minicms                      11   ...           0
+        2011-09 alsoicode/django-admin-sortable        0   ...           0
+        2011-08 user2589/django-rosetta                0   ...           0
+                mbi/django-rosetta                     0   ...           0
+        2005-03 user2589/schooligan                    1   ...           0
+        <BLANKLINE>
+        [114 rows x 7 columns]
         """
         if start:
             if not isinstance(start, datetime.datetime):

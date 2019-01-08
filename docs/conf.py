@@ -19,16 +19,16 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-import oscar
+import stgithub
 
-project = u'strudel.scraper'
+project = u'strudel.ghutils'
 copyright = u'2018, Marat (@cmu.edu)'
-author = oscar.__author__
+author = stgithub.__author__
 
 # The short X.Y version
-version = ".".join(oscar.__version__.split(".", 3)[:2])
+version = ".".join(stgithub.__version__.split(".", 3)[:2])
 # The full version, including alpha/beta/rc tags
-release = oscar.__version__
+release = stgithub.__version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -108,7 +108,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'stscraperdoc'
+htmlhelp_basename = 'stgithubdoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
