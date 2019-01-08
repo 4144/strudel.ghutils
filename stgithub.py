@@ -148,7 +148,7 @@ def parse_record(record_div):
         if title.startswith("Created an issue in"):
             data[repo]['issues'] += 1
         elif title.startswith("Joined the"):
-            data[record_div.a.text]['joined_org'] = 1
+            data[record_div.a['href'].strip('/')]['joined_org'] = 1
         elif title.startswith("Created a pull request in"):
             # fist PR in a given month
             data[repo]['pull_requests'] += 1
