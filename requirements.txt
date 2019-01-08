@@ -1,5 +1,7 @@
 beautifulsoup4
 feedparser
+# later versions of html5lib contain a bug affecting BeautifulSoup on Python3
+html5lib==1.0b8
 pandas
 requests
 six
