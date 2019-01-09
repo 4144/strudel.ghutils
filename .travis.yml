@@ -3,28 +3,39 @@ language: python
 python:
   - 2.7
   - 3.5
+
 cache:
   - pip
+
 install:
   - make install_dev
+
 script:
   - make test
-after_success:
-  - git config --global user.name "semantic-release (via TravisCI)"
-  - git config --global user.email "semantic-release@travis"
-  - pip install python-semantic-release
-  - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST_BRANCH = "" && semantic-release publish
-deploy:
-  - provider: pages
-    skip-cleanup: true
-    github-token: $GH_TOKEN
-    keep-history: true
-    on:
-      branch: master
-    local-dir: docs/build/html
-  - provider: releases
-    skip-cleanup: true
-    api_key: $GH_TOKEN
-    on:
-      tags: true
-    file: dist/*
+
+jobs:
+  include:
+    - stage: publish to PyPI
+      if: env(TRAVIS_TAG)
+      python: 3.5
+      deploy:
+        - provider: script
+          skip_cleanup: true
+          on:
+            branch: master
+          script: make publish
+
+        - provider: pages
+          skip-cleanup: true
+          github-token: $GH_TOKEN
+          keep-history: true
+          on:
+            branch: master
+          local-dir: docs/build/html
+
+        - provider: releases
+          skip-cleanup: true
+          api_key: $GH_TOKEN
+          on:
+            tags: true
+          file: dist/*
