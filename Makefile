@@ -15,7 +15,7 @@ build:
 publish:
 	test $$(git config user.name) || git config user.name "semantic-release (via TravisCI)"
 	test $$(git config user.email) || git config user.email "semantic-release@travis"
-	test $$TRAVIS_TAG && semantic-release publish
+	semantic-release publish
 	# old way: create ~/.pypirc, then
 	# $(MAKE) build
 	# twine upload dist/*  # handled by semantic-release in this package
