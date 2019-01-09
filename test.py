@@ -8,6 +8,8 @@ import unittest
 
 from bs4 import BeautifulSoup
 import pandas as pd
+import six
+
 import stgithub
 
 
@@ -52,12 +54,17 @@ class TestGitHub(unittest.TestCase):
                 # fix json serialization of None
                 expected_result[None] = expected_result.pop('null')
 
-            with open(os.path.join(fixtures_dir, fname)) as fh:
+            with open(os.path.join(fixtures_dir, fname), 'rb') as fh:
                 input_text = fh.read()
 
             tree = BeautifulSoup(input_text, 'html.parser')
+            result = stgithub._parse_timeline_update_record(tree)
             self.assertDictEqual(
-                expected_result, stgithub._parse_timeline_update_record(tree))
+                expected_result, result,
+                "Record parsing result is different from expected for %s:\n"
+                "Expected: %s\n"
+                "Got: %s" % (fname, expected_result, result)
+            )
         fh.close()
 
     def test_parse_month(self):
@@ -94,6 +101,17 @@ class TestGitHub(unittest.TestCase):
         self.assertTrue(all(isinstance(v, int) for v in contribs.values()))
         self.assertTrue(all(v >= 0 for v in contribs.values()))
 
+    def test_extract_activity_feed_links(self):
+        fpath = os.path.join(self.fixtures_dir, 'activity_feed', 'chunk.html')
+        fh = open(fpath, 'rb')
+        chunk_text = fh.read()
+        fh.close()
+        gen = stgithub._extract_activity_feed_links(chunk_text)
+        self.assertIsInstance(gen, Generator)
+        date, href = next(gen)
+        self.assertEqual(date, '2019-01-09')
+        self.assertEqual(href, '/CMUSTRUDEL/strudel.ghutils/tree/master')
+
     def test_links_to_recent_user_activity(self):
         gen = self.scraper.links_to_recent_user_activity(self.user)
         self.assertIsInstance(gen, Generator)
@@ -103,7 +121,7 @@ class TestGitHub(unittest.TestCase):
         self.assertIsInstance(first_res, tuple)
         self.assertEqual(len(first_res), 2)
         self._test_datestring(first_res[0])
-        self.assertIsInstance(first_res[1], str)
+        self.assertIsInstance(first_res[1], six.string_types)
 
     def test_full_user_activity_timeline(self):
         gen = self.scraper.full_user_activity_timeline(self.user)

@@ -1,0 +1,1634 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <id>tag:github.com,2008:/user2589</id>
+  <link type="text/html" rel="alternate" href="https://github.com/user2589"/>
+  <link type="application/atom+xml" rel="self" href="https://github.com/user2589"/>
+  <title>user2589’s Activity</title>
+  <updated>2019-01-09T20:26:19Z</updated>
+  <entry>
+    <id>tag:github.com,2008:PushEvent/8860268237</id>
+    <published>2019-01-09T20:26:19Z</published>
+    <updated>2019-01-09T20:26:19Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/CMUSTRUDEL/strudel.ghutils/compare/ce9259daf4...eeb76b237f"/>
+    <title type="html">user2589 pushed to master in CMUSTRUDEL/strudel.ghutils</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;push&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- push --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+      
+      pushed to
+
+        &lt;a class=&quot;branch-name&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/tree/master&quot; rel=&quot;noreferrer&quot;&gt;master&lt;/a&gt;
+        in
+
+      &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils&quot; rel=&quot;noreferrer&quot;&gt;CMUSTRUDEL/strudel.ghutils&lt;/a&gt;
+      &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+        &lt;relative-time datetime=&quot;2019-01-09T20:26:19Z&quot;&gt;Jan 9, 2019&lt;/relative-time&gt;
+      &lt;/span&gt;
+
+        &lt;div class=&quot;Box p-3 mt-2&quot;&gt;
+          &lt;span&gt;2 commits to&lt;/span&gt;
+          &lt;a class=&quot;branch-name&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/tree/master&quot; rel=&quot;noreferrer&quot;&gt;master&lt;/a&gt;
+
+          &lt;div class=&quot;commits pusher-is-only-committer&quot;&gt;
+            &lt;ul&gt;
+                &lt;li class=&quot;d-flex flex-items-baseline&quot;&gt;
+                  &lt;span title=&quot;user2589&quot;&gt;
+                    &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;mr-1&quot; src=&quot;https://avatars2.githubusercontent.com/u/707904?s=32&amp;amp;v=4&quot; width=&quot;16&quot; height=&quot;16&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+                  &lt;/span&gt;
+                  &lt;code&gt;&lt;a class=&quot;mr-1&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/commit/eeb76b237ff96ab6eb0699781aea8ebfa502cef9&quot; rel=&quot;noreferrer&quot;&gt;eeb76b2&lt;/a&gt;&lt;/code&gt;
+                  &lt;div class=&quot;dashboard-break-word lh-condensed&quot;&gt;
+                    &lt;blockquote&gt;
+                      test: fix ResourceWarning in test_parse_record
+                    &lt;/blockquote&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+                &lt;li class=&quot;d-flex flex-items-baseline&quot;&gt;
+                  &lt;span title=&quot;user2589&quot;&gt;
+                    &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;mr-1&quot; src=&quot;https://avatars2.githubusercontent.com/u/707904?s=32&amp;amp;v=4&quot; width=&quot;16&quot; height=&quot;16&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+                  &lt;/span&gt;
+                  &lt;code&gt;&lt;a class=&quot;mr-1&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/commit/cf5ef9f5582611bc7ad437ab98eede677ae6e842&quot; rel=&quot;noreferrer&quot;&gt;cf5ef9f&lt;/a&gt;&lt;/code&gt;
+                  &lt;div class=&quot;dashboard-break-word lh-condensed&quot;&gt;
+                    &lt;blockquote&gt;
+                      fix: add lxml parser dependency as it is not explicitly required by BS4
+                    &lt;/blockquote&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+
+
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:PushEvent/8860194095</id>
+    <published>2019-01-09T20:11:49Z</published>
+    <updated>2019-01-09T20:11:49Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/CMUSTRUDEL/strudel.ghutils/compare/59898023eb...ce9259daf4"/>
+    <title type="html">user2589 pushed to master in CMUSTRUDEL/strudel.ghutils</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;push&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- push --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+      
+      pushed to
+
+        &lt;a class=&quot;branch-name&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/tree/master&quot; rel=&quot;noreferrer&quot;&gt;master&lt;/a&gt;
+        in
+
+      &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils&quot; rel=&quot;noreferrer&quot;&gt;CMUSTRUDEL/strudel.ghutils&lt;/a&gt;
+      &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+        &lt;relative-time datetime=&quot;2019-01-09T20:11:49Z&quot;&gt;Jan 9, 2019&lt;/relative-time&gt;
+      &lt;/span&gt;
+
+        &lt;div class=&quot;Box p-3 mt-2&quot;&gt;
+          &lt;span&gt;2 commits to&lt;/span&gt;
+          &lt;a class=&quot;branch-name&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/tree/master&quot; rel=&quot;noreferrer&quot;&gt;master&lt;/a&gt;
+
+          &lt;div class=&quot;commits &quot;&gt;
+            &lt;ul&gt;
+                &lt;li class=&quot;d-flex flex-items-baseline&quot;&gt;
+                  &lt;span title=&quot;semantic-release&quot;&gt;
+                    &lt;img class=&quot;mr-1&quot; width=&quot;16&quot; height=&quot;16&quot; alt=&quot;&quot; src=&quot;https://camo.githubusercontent.com/8a21485e63a91cd9f4ad9b12639c4117ca7e7179/68747470733a2f2f302e67726176617461722e636f6d2f6176617461722f32303133653935373933313361323434336434613137643432633261363832633f643d68747470732533412532462532466769746875622e6769746875626173736574732e636f6d253246696d6167657325324667726176617461727325324667726176617461722d757365722d3432302e706e6726723d6726733d313430&quot; data-canonical-src=&quot;https://0.gravatar.com/avatar/2013e9579313a2443d4a17d42c2a682c?d=https%3A%2F%2Fgithub.githubassets.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png&amp;amp;r=g&amp;amp;s=140&quot;&gt;
+                  &lt;/span&gt;
+                  &lt;code&gt;&lt;a class=&quot;mr-1&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/commit/ce9259daf4cbec19700d30458faa95a610ab2305&quot; rel=&quot;noreferrer&quot;&gt;ce9259d&lt;/a&gt;&lt;/code&gt;
+                  &lt;div class=&quot;dashboard-break-word lh-condensed&quot;&gt;
+                    &lt;blockquote&gt;
+                      chore: conditional deployment (don&#39;t release twice)
+                    &lt;/blockquote&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+                &lt;li class=&quot;d-flex flex-items-baseline&quot;&gt;
+                  &lt;span title=&quot;user2589&quot;&gt;
+                    &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;mr-1&quot; src=&quot;https://avatars2.githubusercontent.com/u/707904?s=32&amp;amp;v=4&quot; width=&quot;16&quot; height=&quot;16&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+                  &lt;/span&gt;
+                  &lt;code&gt;&lt;a class=&quot;mr-1&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/commit/c818f00a47b389875e6f42408bb35fa03dfd4e12&quot; rel=&quot;noreferrer&quot;&gt;c818f00&lt;/a&gt;&lt;/code&gt;
+                  &lt;div class=&quot;dashboard-break-word lh-condensed&quot;&gt;
+                    &lt;blockquote&gt;
+                      docs: clean up copypasted references from the previous project
+                    &lt;/blockquote&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+
+
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:PushEvent/8853870184</id>
+    <published>2019-01-08T22:48:14Z</published>
+    <updated>2019-01-08T22:48:14Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/CMUSTRUDEL/strudel.ghutils/compare/b3ed6b78bf...59898023eb"/>
+    <title type="html">user2589 pushed to master in CMUSTRUDEL/strudel.ghutils</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;push&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- push --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+      
+      pushed to
+
+        &lt;a class=&quot;branch-name&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/tree/master&quot; rel=&quot;noreferrer&quot;&gt;master&lt;/a&gt;
+        in
+
+      &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils&quot; rel=&quot;noreferrer&quot;&gt;CMUSTRUDEL/strudel.ghutils&lt;/a&gt;
+      &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+        &lt;relative-time datetime=&quot;2019-01-08T22:48:14Z&quot;&gt;Jan 8, 2019&lt;/relative-time&gt;
+      &lt;/span&gt;
+
+        &lt;div class=&quot;Box p-3 mt-2&quot;&gt;
+          &lt;span&gt;2 commits to&lt;/span&gt;
+          &lt;a class=&quot;branch-name&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/tree/master&quot; rel=&quot;noreferrer&quot;&gt;master&lt;/a&gt;
+
+          &lt;div class=&quot;commits pusher-is-only-committer&quot;&gt;
+            &lt;ul&gt;
+                &lt;li class=&quot;d-flex flex-items-baseline&quot;&gt;
+                  &lt;span title=&quot;user2589&quot;&gt;
+                    &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;mr-1&quot; src=&quot;https://avatars2.githubusercontent.com/u/707904?s=32&amp;amp;v=4&quot; width=&quot;16&quot; height=&quot;16&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+                  &lt;/span&gt;
+                  &lt;code&gt;&lt;a class=&quot;mr-1&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/commit/59898023eb2936b8906f79d5e8a029ba416d7046&quot; rel=&quot;noreferrer&quot;&gt;5989802&lt;/a&gt;&lt;/code&gt;
+                  &lt;div class=&quot;dashboard-break-word lh-condensed&quot;&gt;
+                    &lt;blockquote&gt;
+                      chore: publish releases from CI
+                    &lt;/blockquote&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+                &lt;li class=&quot;d-flex flex-items-baseline&quot;&gt;
+                  &lt;span title=&quot;user2589&quot;&gt;
+                    &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;mr-1&quot; src=&quot;https://avatars2.githubusercontent.com/u/707904?s=32&amp;amp;v=4&quot; width=&quot;16&quot; height=&quot;16&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+                  &lt;/span&gt;
+                  &lt;code&gt;&lt;a class=&quot;mr-1&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/commit/2e95e97941b7b64e54f787721cfb09b03cf8eac1&quot; rel=&quot;noreferrer&quot;&gt;2e95e97&lt;/a&gt;&lt;/code&gt;
+                  &lt;div class=&quot;dashboard-break-word lh-condensed&quot;&gt;
+                    &lt;blockquote&gt;
+                      fix: BS4 1.0.1 is not Python3 compatible
+                    &lt;/blockquote&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+
+
+                &lt;li class=&quot;f6 mt-2&quot;&gt;
+                  &lt;a class=&quot;link-gray&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/compare/b3ed6b78bf...59898023eb&quot; rel=&quot;noreferrer&quot;&gt;1 more commits »&lt;/a&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:CreateEvent/8853298716</id>
+    <published>2019-01-08T20:55:59Z</published>
+    <updated>2019-01-08T20:55:59Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/CMUSTRUDEL/strudel.ghutils/tree/v0.0.1"/>
+    <title type="html">user2589 created a tag v0.0.1 in CMUSTRUDEL/strudel.ghutils</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;tag&quot;&gt;&lt;div class=&quot;body&quot;&gt;
+&lt;!-- create --&gt;
+&lt;div class=&quot;d-flex flex-items-baseline border-bottom border-gray py-3&quot;&gt;
+    &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+        &lt;div class=&quot;d-flex flex-items-baseline&quot;&gt;
+          &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            created a
+            tag
+            in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils&quot; rel=&quot;noreferrer&quot;&gt;CMUSTRUDEL/strudel.ghutils&lt;/a&gt;
+            &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+              &lt;relative-time datetime=&quot;2019-01-08T20:55:59Z&quot;&gt;Jan 8, 2019&lt;/relative-time&gt;
+            &lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3 mt-2&quot;&gt;
+      &lt;div&gt;
+        &lt;div class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+            &lt;a class=&quot;link-gray-dark text-bold&quot; title=&quot;v0.0.1&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/tree/v0.0.1&quot; rel=&quot;noreferrer&quot;&gt;v0.0.1&lt;/a&gt; in &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils&quot; rel=&quot;noreferrer&quot;&gt;CMUSTRUDEL/strudel.ghutils&lt;/a&gt;
+        &lt;/div&gt;
+
+
+          &lt;p class=&quot;f6 text-gray mt-2 mb-0&quot;&gt;
+            &lt;span&gt;Updated Jan 9&lt;/span&gt;
+          &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:CreateEvent/8853298689</id>
+    <published>2019-01-08T20:55:59Z</published>
+    <updated>2019-01-08T20:55:59Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/CMUSTRUDEL/strudel.ghutils/tree/v0.0.2"/>
+    <title type="html">user2589 created a tag v0.0.2 in CMUSTRUDEL/strudel.ghutils</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;tag&quot;&gt;&lt;div class=&quot;body&quot;&gt;
+&lt;!-- create --&gt;
+&lt;div class=&quot;d-flex flex-items-baseline border-bottom border-gray py-3&quot;&gt;
+    &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+        &lt;div class=&quot;d-flex flex-items-baseline&quot;&gt;
+          &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            created a
+            tag
+            in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils&quot; rel=&quot;noreferrer&quot;&gt;CMUSTRUDEL/strudel.ghutils&lt;/a&gt;
+            &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+              &lt;relative-time datetime=&quot;2019-01-08T20:55:59Z&quot;&gt;Jan 8, 2019&lt;/relative-time&gt;
+            &lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3 mt-2&quot;&gt;
+      &lt;div&gt;
+        &lt;div class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+            &lt;a class=&quot;link-gray-dark text-bold&quot; title=&quot;v0.0.2&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/tree/v0.0.2&quot; rel=&quot;noreferrer&quot;&gt;v0.0.2&lt;/a&gt; in &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils&quot; rel=&quot;noreferrer&quot;&gt;CMUSTRUDEL/strudel.ghutils&lt;/a&gt;
+        &lt;/div&gt;
+
+
+          &lt;p class=&quot;f6 text-gray mt-2 mb-0&quot;&gt;
+            &lt;span&gt;Updated Jan 9&lt;/span&gt;
+          &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:PushEvent/8853298503</id>
+    <published>2019-01-08T20:55:57Z</published>
+    <updated>2019-01-08T20:55:57Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/CMUSTRUDEL/strudel.ghutils/compare/c50d3d0728...b3ed6b78bf"/>
+    <title type="html">user2589 pushed to master in CMUSTRUDEL/strudel.ghutils</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;push&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- push --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+      
+      pushed to
+
+        &lt;a class=&quot;branch-name&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/tree/master&quot; rel=&quot;noreferrer&quot;&gt;master&lt;/a&gt;
+        in
+
+      &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils&quot; rel=&quot;noreferrer&quot;&gt;CMUSTRUDEL/strudel.ghutils&lt;/a&gt;
+      &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+        &lt;relative-time datetime=&quot;2019-01-08T20:55:57Z&quot;&gt;Jan 8, 2019&lt;/relative-time&gt;
+      &lt;/span&gt;
+
+        &lt;div class=&quot;Box p-3 mt-2&quot;&gt;
+          &lt;span&gt;2 commits to&lt;/span&gt;
+          &lt;a class=&quot;branch-name&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/tree/master&quot; rel=&quot;noreferrer&quot;&gt;master&lt;/a&gt;
+
+          &lt;div class=&quot;commits &quot;&gt;
+            &lt;ul&gt;
+                &lt;li class=&quot;d-flex flex-items-baseline&quot;&gt;
+                  &lt;span title=&quot;semantic-release&quot;&gt;
+                    &lt;img class=&quot;mr-1&quot; width=&quot;16&quot; height=&quot;16&quot; alt=&quot;&quot; src=&quot;https://camo.githubusercontent.com/8a21485e63a91cd9f4ad9b12639c4117ca7e7179/68747470733a2f2f302e67726176617461722e636f6d2f6176617461722f32303133653935373933313361323434336434613137643432633261363832633f643d68747470732533412532462532466769746875622e6769746875626173736574732e636f6d253246696d6167657325324667726176617461727325324667726176617461722d757365722d3432302e706e6726723d6726733d313430&quot; data-canonical-src=&quot;https://0.gravatar.com/avatar/2013e9579313a2443d4a17d42c2a682c?d=https%3A%2F%2Fgithub.githubassets.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png&amp;amp;r=g&amp;amp;s=140&quot;&gt;
+                  &lt;/span&gt;
+                  &lt;code&gt;&lt;a class=&quot;mr-1&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/commit/b3ed6b78bf23cd1722d90aba439b1ec7313142c8&quot; rel=&quot;noreferrer&quot;&gt;b3ed6b7&lt;/a&gt;&lt;/code&gt;
+                  &lt;div class=&quot;dashboard-break-word lh-condensed&quot;&gt;
+                    &lt;blockquote&gt;
+                      0.0.2
+                    &lt;/blockquote&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+                &lt;li class=&quot;d-flex flex-items-baseline&quot;&gt;
+                  &lt;span title=&quot;user2589&quot;&gt;
+                    &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;mr-1&quot; src=&quot;https://avatars2.githubusercontent.com/u/707904?s=32&amp;amp;v=4&quot; width=&quot;16&quot; height=&quot;16&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+                  &lt;/span&gt;
+                  &lt;code&gt;&lt;a class=&quot;mr-1&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/commit/294f0b2a3c30d7aa82275d829730fd569df1e26b&quot; rel=&quot;noreferrer&quot;&gt;294f0b2&lt;/a&gt;&lt;/code&gt;
+                  &lt;div class=&quot;dashboard-break-word lh-condensed&quot;&gt;
+                    &lt;blockquote&gt;
+                      fix: exclude non-repository links from crated_repository event
+                    &lt;/blockquote&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+
+
+                &lt;li class=&quot;f6 mt-2&quot;&gt;
+                  &lt;a class=&quot;link-gray&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/compare/c50d3d0728...b3ed6b78bf&quot; rel=&quot;noreferrer&quot;&gt;2 more commits »&lt;/a&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:WatchEvent/8839103151</id>
+    <published>2019-01-06T01:20:05Z</published>
+    <updated>2019-01-06T01:20:05Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/relekang/python-semantic-release"/>
+    <title type="html">user2589 starred relekang/python-semantic-release</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;watch_started&quot;&gt;&lt;div class=&quot;body&quot;&gt;
+&lt;!-- watch --&gt;
+&lt;div class=&quot;d-flex flex-items-baseline border-bottom border-gray py-3&quot;&gt;
+    &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+      &lt;div&gt;
+        &lt;div class=&quot;d-flex flex-items-baseline&quot;&gt;
+          &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            starred
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/relekang/python-semantic-release&quot; rel=&quot;noreferrer&quot;&gt;relekang/python-semantic-release&lt;/a&gt;
+            &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+              &lt;relative-time datetime=&quot;2019-01-06T01:20:05Z&quot;&gt;Jan 6, 2019&lt;/relative-time&gt;
+            &lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;Box p-3 mt-2&quot;&gt;
+        &lt;div&gt;
+          &lt;div class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/relekang/python-semantic-release&quot; rel=&quot;noreferrer&quot;&gt;relekang/python-semantic-release&lt;/a&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;dashboard-break-word text-gray mt-1 mb-0 repo-description&quot;&gt;
+            &lt;p&gt;Automatic semantic versioning for python projects&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;p class=&quot;f6 text-gray mt-2 mb-0&quot;&gt;
+              &lt;span class=&quot;d-inline-block text-gray mr-3&quot;&gt;
+                &lt;span class=&quot;repo-language-color ml-0&quot; style=&quot;background-color:#3572A5;&quot;&gt;&lt;/span&gt;
+                &lt;span itemprop=&quot;programmingLanguage&quot;&gt;Python&lt;/span&gt;
+              &lt;/span&gt;
+
+              &lt;span class=&quot;d-inline-block mr-3&quot;&gt;
+                  &lt;a class=&quot;muted-link&quot; href=&quot;/relekang/python-semantic-release/stargazers&quot; rel=&quot;noreferrer&quot;&gt;&lt;svg class=&quot;octicon octicon-star mr-1&quot; viewBox=&quot;0 0 14 16&quot; version=&quot;1.1&quot; width=&quot;14&quot; height=&quot;16&quot; aria-hidden=&quot;true&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;120&lt;/a&gt;
+              &lt;/span&gt;
+
+
+              &lt;span&gt;Updated Jan 6&lt;/span&gt;
+          &lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:PushEvent/8835411153</id>
+    <published>2019-01-04T17:30:32Z</published>
+    <updated>2019-01-04T17:30:32Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/ssc-oscar/oscar.py/compare/ee4570af45...c20da8563e"/>
+    <title type="html">user2589 pushed to gh-pages in ssc-oscar/oscar.py</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;push&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- push --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+      
+      pushed to
+
+        &lt;a class=&quot;branch-name&quot; href=&quot;/ssc-oscar/oscar.py/tree/gh-pages&quot; rel=&quot;noreferrer&quot;&gt;gh-pages&lt;/a&gt;
+        in
+
+      &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/ssc-oscar/oscar.py&quot; rel=&quot;noreferrer&quot;&gt;ssc-oscar/oscar.py&lt;/a&gt;
+      &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+        &lt;relative-time datetime=&quot;2019-01-04T17:30:32Z&quot;&gt;Jan 4, 2019&lt;/relative-time&gt;
+      &lt;/span&gt;
+
+        &lt;div class=&quot;Box p-3 mt-2&quot;&gt;
+          &lt;span&gt;1 commit to&lt;/span&gt;
+          &lt;a class=&quot;branch-name&quot; href=&quot;/ssc-oscar/oscar.py/tree/gh-pages&quot; rel=&quot;noreferrer&quot;&gt;gh-pages&lt;/a&gt;
+
+          &lt;div class=&quot;commits &quot;&gt;
+            &lt;ul&gt;
+                &lt;li class=&quot;d-flex flex-items-baseline&quot;&gt;
+                  &lt;span title=&quot;traviscibot&quot;&gt;
+                    &lt;a class=&quot;d-inline-block&quot; href=&quot;/traviscibot&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;mr-1&quot; src=&quot;https://avatars2.githubusercontent.com/u/33116358?s=32&amp;amp;v=4&quot; width=&quot;16&quot; height=&quot;16&quot; alt=&quot;@traviscibot&quot;&gt;&lt;/a&gt;
+                  &lt;/span&gt;
+                  &lt;code&gt;&lt;a class=&quot;mr-1&quot; href=&quot;/ssc-oscar/oscar.py/commit/c20da8563e71f3d460310255d5db845a97ad265b&quot; rel=&quot;noreferrer&quot;&gt;c20da85&lt;/a&gt;&lt;/code&gt;
+                  &lt;div class=&quot;dashboard-break-word lh-condensed&quot;&gt;
+                    &lt;blockquote&gt;
+                      Deploy ssc-oscar/oscar.py to github.com/ssc-oscar/oscar.py.git:gh-pages
+                    &lt;/blockquote&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+
+
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:PushEvent/8835401879</id>
+    <published>2019-01-04T17:28:38Z</published>
+    <updated>2019-01-04T17:28:38Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/ssc-oscar/oscar.py/compare/c23a0f6e61...01bdc3adfe"/>
+    <title type="html">user2589 pushed to master in ssc-oscar/oscar.py</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;push&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- push --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+      
+      pushed to
+
+        &lt;a class=&quot;branch-name&quot; href=&quot;/ssc-oscar/oscar.py/tree/master&quot; rel=&quot;noreferrer&quot;&gt;master&lt;/a&gt;
+        in
+
+      &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/ssc-oscar/oscar.py&quot; rel=&quot;noreferrer&quot;&gt;ssc-oscar/oscar.py&lt;/a&gt;
+      &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+        &lt;relative-time datetime=&quot;2019-01-04T17:28:38Z&quot;&gt;Jan 4, 2019&lt;/relative-time&gt;
+      &lt;/span&gt;
+
+        &lt;div class=&quot;Box p-3 mt-2&quot;&gt;
+          &lt;span&gt;2 commits to&lt;/span&gt;
+          &lt;a class=&quot;branch-name&quot; href=&quot;/ssc-oscar/oscar.py/tree/master&quot; rel=&quot;noreferrer&quot;&gt;master&lt;/a&gt;
+
+          &lt;div class=&quot;commits &quot;&gt;
+            &lt;ul&gt;
+                &lt;li class=&quot;d-flex flex-items-baseline&quot;&gt;
+                  &lt;span title=&quot;user2589&quot;&gt;
+                    &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;mr-1&quot; src=&quot;https://avatars2.githubusercontent.com/u/707904?s=32&amp;amp;v=4&quot; width=&quot;16&quot; height=&quot;16&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+                  &lt;/span&gt;
+                  &lt;code&gt;&lt;a class=&quot;mr-1&quot; href=&quot;/ssc-oscar/oscar.py/commit/01bdc3adfe9fe8fada9cb76031112218fde30a0c&quot; rel=&quot;noreferrer&quot;&gt;01bdc3a&lt;/a&gt;&lt;/code&gt;
+                  &lt;div class=&quot;dashboard-break-word lh-condensed&quot;&gt;
+                    &lt;blockquote&gt;
+                      Merge pull request &lt;a class=&quot;issue-link js-issue-link&quot; data-error-text=&quot;Failed to load issue title&quot; data-id=&quot;390917680&quot; data-permission-text=&quot;Issue title is private&quot; data-url=&quot;https://github.com/ssc-oscar/oscar.py/issues/2&quot; data-hovercard-type=&quot;pull_request&quot; data-hovercard-url=&quot;/ssc-oscar/oscar.py/pull/2/hovercard&quot; href=&quot;https://github.com/ssc-oscar/oscar.py/pull/2&quot; rel=&quot;noreferrer&quot;&gt;#2&lt;/a&gt; from cbogart/master
+                    &lt;/blockquote&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+                &lt;li class=&quot;d-flex flex-items-baseline&quot;&gt;
+                  &lt;span title=&quot;cbogart&quot;&gt;
+                    &lt;a class=&quot;d-inline-block&quot; href=&quot;/cbogart&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;mr-1&quot; src=&quot;https://avatars3.githubusercontent.com/u/5161102?s=32&amp;amp;v=4&quot; width=&quot;16&quot; height=&quot;16&quot; alt=&quot;@cbogart&quot;&gt;&lt;/a&gt;
+                  &lt;/span&gt;
+                  &lt;code&gt;&lt;a class=&quot;mr-1&quot; href=&quot;/ssc-oscar/oscar.py/commit/33623b8dfb30a96a131b70fd6302e9433b3a7fd5&quot; rel=&quot;noreferrer&quot;&gt;33623b8&lt;/a&gt;&lt;/code&gt;
+                  &lt;div class=&quot;dashboard-break-word lh-condensed&quot;&gt;
+                    &lt;blockquote&gt;
+                      qualified reference to fnv1a_32
+                    &lt;/blockquote&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+
+
+                &lt;li class=&quot;f6 mt-2&quot;&gt;
+                  &lt;a class=&quot;link-gray&quot; href=&quot;/ssc-oscar/oscar.py/compare/c23a0f6e61...01bdc3adfe&quot; rel=&quot;noreferrer&quot;&gt;2 more commits »&lt;/a&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:PullRequestEvent/8835401831</id>
+    <published>2019-01-04T17:28:37Z</published>
+    <updated>2019-01-04T17:28:37Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/ssc-oscar/oscar.py/pull/2"/>
+    <title type="html">user2589 merged a pull request in ssc-oscar/oscar.py</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_closed&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- pull_request --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline&quot;&gt;
+        &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            merged
+            a pull request in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/ssc-oscar/oscar.py&quot; rel=&quot;noreferrer&quot;&gt;ssc-oscar/oscar.py&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2019-01-04T17:28:37Z&quot;&gt;Jan 4, 2019&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3 my-2&quot;&gt;
+      &lt;svg height=&quot;16&quot; aria-label=&quot;Pull request&quot; class=&quot;octicon octicon-git-pull-request merged d-inline-block mt-1 float-left&quot; viewBox=&quot;0 0 12 16&quot; version=&quot;1.1&quot; width=&quot;12&quot; role=&quot;img&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M11 11.28V5c-.03-.78-.34-1.47-.94-2.06C9.46 2.35 8.78 2.03 8 2H7V0L4 3l3 3V4h1c.27.02.48.11.69.31.21.2.3.42.31.69v6.28A1.993 1.993 0 0 0 10 15a1.993 1.993 0 0 0 1-3.72zm-1 2.92c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zM4 3c0-1.11-.89-2-2-2a1.993 1.993 0 0 0-1 3.72v6.56A1.993 1.993 0 0 0 2 15a1.993 1.993 0 0 0 1-3.72V4.72c.59-.34 1-.98 1-1.72zm-.8 10c0 .66-.55 1.2-1.2 1.2-.65 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+
+      &lt;div class=&quot;ml-4&quot;&gt;
+        &lt;div&gt;
+          &lt;span class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;&lt;a class=&quot;text-gray-dark text-bold&quot; aria-label=&quot;Read from new project-to-commit file&quot; href=&quot;/ssc-oscar/oscar.py/pull/2&quot; rel=&quot;noreferrer&quot;&gt;Read from new project-to-commit file&lt;/a&gt;&lt;/span&gt;
+          &lt;span class=&quot;f4 text-gray-light ml-1&quot;&gt;#2&lt;/span&gt;
+            &lt;div class=&quot;lh-condensed mb-2 mt-1&quot;&gt;
+              &lt;p&gt;This fixes &lt;em&gt;just&lt;/em&gt; the refererence to the new project-to-commit file. Similar changes need to be made to all tch files.&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+          &lt;div class=&quot;diffstat d-inline-block mt-1 tooltipped tooltipped-se&quot; aria-label=&quot;3 commits with 5 additions and 3 deletions&quot;&gt;
+            &lt;span class=&quot;text-green&quot;&gt;+5&lt;/span&gt;
+            &lt;span class=&quot;text-red&quot;&gt;-3&lt;/span&gt;
+          &lt;/div&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssueCommentEvent/8832366526</id>
+    <published>2019-01-04T04:57:19Z</published>
+    <updated>2019-01-04T04:57:19Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/bagrat/pylease/pull/1#issuecomment-451353649"/>
+    <title type="html">user2589 commented on pull request bagrat/pylease#1</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_comment&quot;&gt;&lt;div class=&quot;body&quot;&gt;
+&lt;!-- issue_comment --&gt;
+&lt;div class=&quot;d-flex border-bottom border-gray py-3&quot;&gt;
+    &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline mb-2&quot;&gt;
+        &lt;div&gt;
+          &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+          
+          commented on
+          pull request
+          &lt;a class=&quot;link-gray-dark text-bold&quot; title=&quot;Python3 compatibility fixes&quot; href=&quot;/bagrat/pylease/pull/1#issuecomment-451353649&quot; rel=&quot;noreferrer&quot;&gt;bagrat/pylease#1&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2019-01-04T04:57:19Z&quot;&gt;Jan 4, 2019&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;div class=&quot;message markdown-body Box p-3&quot;&gt;
+      &lt;div class=&quot;f6 mb-1&quot;&gt;
+        &lt;a title=&quot;Python3 compatibility fixes&quot; class=&quot;link-gray&quot; href=&quot;/bagrat/pylease/pull/1#issuecomment-451353649&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar mr-1&quot; src=&quot;https://avatars2.githubusercontent.com/u/707904?s=32&amp;amp;v=4&quot; width=&quot;16&quot; height=&quot;16&quot; alt=&quot;@user2589&quot;&gt; &lt;span class=&quot;link-gray-dark text-bold&quot;&gt;user2589&lt;/span&gt; commented &lt;relative-time datetime=&quot;2019-01-04T04:57:19Z&quot;&gt;Jan 4, 2019&lt;/relative-time&gt;&lt;/a&gt;
+      &lt;/div&gt;
+        &lt;p&gt;the problem looks to be in the test suite&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:PullRequestEvent/8831607519</id>
+    <published>2019-01-03T23:44:53Z</published>
+    <updated>2019-01-03T23:44:53Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/bagrat/pylease/pull/1"/>
+    <title type="html">user2589 opened a pull request in bagrat/pylease</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_opened&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- pull_request --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline&quot;&gt;
+        &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            opened
+            a pull request in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/bagrat/pylease&quot; rel=&quot;noreferrer&quot;&gt;bagrat/pylease&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2019-01-03T23:44:53Z&quot;&gt;Jan 3, 2019&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3 my-2&quot;&gt;
+      &lt;svg height=&quot;16&quot; aria-label=&quot;Pull request&quot; class=&quot;octicon octicon-git-pull-request open d-inline-block mt-1 float-left&quot; viewBox=&quot;0 0 12 16&quot; version=&quot;1.1&quot; width=&quot;12&quot; role=&quot;img&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M11 11.28V5c-.03-.78-.34-1.47-.94-2.06C9.46 2.35 8.78 2.03 8 2H7V0L4 3l3 3V4h1c.27.02.48.11.69.31.21.2.3.42.31.69v6.28A1.993 1.993 0 0 0 10 15a1.993 1.993 0 0 0 1-3.72zm-1 2.92c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zM4 3c0-1.11-.89-2-2-2a1.993 1.993 0 0 0-1 3.72v6.56A1.993 1.993 0 0 0 2 15a1.993 1.993 0 0 0 1-3.72V4.72c.59-.34 1-.98 1-1.72zm-.8 10c0 .66-.55 1.2-1.2 1.2-.65 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+
+      &lt;div class=&quot;ml-4&quot;&gt;
+        &lt;div&gt;
+          &lt;span class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;&lt;a class=&quot;text-gray-dark text-bold&quot; aria-label=&quot;Python3 compatibility fixes&quot; href=&quot;/bagrat/pylease/pull/1&quot; rel=&quot;noreferrer&quot;&gt;Python3 compatibility fixes&lt;/a&gt;&lt;/span&gt;
+          &lt;span class=&quot;f4 text-gray-light ml-1&quot;&gt;#1&lt;/span&gt;
+        &lt;/div&gt;
+
+          &lt;div class=&quot;diffstat d-inline-block mt-1 tooltipped tooltipped-se&quot; aria-label=&quot;3 commits with 10 additions and 6 deletions&quot;&gt;
+            &lt;span class=&quot;text-green&quot;&gt;+10&lt;/span&gt;
+            &lt;span class=&quot;text-red&quot;&gt;-6&lt;/span&gt;
+          &lt;/div&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:PushEvent/8831604805</id>
+    <published>2019-01-03T23:43:54Z</published>
+    <updated>2019-01-03T23:43:54Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/user2589/pylease/compare/b882a542f3...98dc355102"/>
+    <title type="html">user2589 pushed to dev in user2589/pylease</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;push&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- push --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+      
+      pushed to
+
+        &lt;a class=&quot;branch-name&quot; href=&quot;/user2589/pylease/tree/dev&quot; rel=&quot;noreferrer&quot;&gt;dev&lt;/a&gt;
+        in
+
+      &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589/pylease&quot; rel=&quot;noreferrer&quot;&gt;user2589/pylease&lt;/a&gt;
+      &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+        &lt;relative-time datetime=&quot;2019-01-03T23:43:54Z&quot;&gt;Jan 3, 2019&lt;/relative-time&gt;
+      &lt;/span&gt;
+
+        &lt;div class=&quot;Box p-3 mt-2&quot;&gt;
+          &lt;span&gt;2 commits to&lt;/span&gt;
+          &lt;a class=&quot;branch-name&quot; href=&quot;/user2589/pylease/tree/dev&quot; rel=&quot;noreferrer&quot;&gt;dev&lt;/a&gt;
+
+          &lt;div class=&quot;commits pusher-is-only-committer&quot;&gt;
+            &lt;ul&gt;
+                &lt;li class=&quot;d-flex flex-items-baseline&quot;&gt;
+                  &lt;span title=&quot;user2589&quot;&gt;
+                    &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;mr-1&quot; src=&quot;https://avatars2.githubusercontent.com/u/707904?s=32&amp;amp;v=4&quot; width=&quot;16&quot; height=&quot;16&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+                  &lt;/span&gt;
+                  &lt;code&gt;&lt;a class=&quot;mr-1&quot; href=&quot;/user2589/pylease/commit/98dc3551029bb91f5d8ddb29e416cca7a70be77a&quot; rel=&quot;noreferrer&quot;&gt;98dc355&lt;/a&gt;&lt;/code&gt;
+                  &lt;div class=&quot;dashboard-break-word lh-condensed&quot;&gt;
+                    &lt;blockquote&gt;
+                      Merge branch &#39;dev&#39; of github.com:user2589/pylease into dev
+                    &lt;/blockquote&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+                &lt;li class=&quot;d-flex flex-items-baseline&quot;&gt;
+                  &lt;span title=&quot;user2589&quot;&gt;
+                    &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;mr-1&quot; src=&quot;https://avatars2.githubusercontent.com/u/707904?s=32&amp;amp;v=4&quot; width=&quot;16&quot; height=&quot;16&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+                  &lt;/span&gt;
+                  &lt;code&gt;&lt;a class=&quot;mr-1&quot; href=&quot;/user2589/pylease/commit/ae38659a7be1fc9de66dd5207597ca104d55722e&quot; rel=&quot;noreferrer&quot;&gt;ae38659&lt;/a&gt;&lt;/code&gt;
+                  &lt;div class=&quot;dashboard-break-word lh-condensed&quot;&gt;
+                    &lt;blockquote&gt;
+                      fix package github url
+                    &lt;/blockquote&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+
+
+                &lt;li class=&quot;f6 mt-2&quot;&gt;
+                  &lt;a class=&quot;link-gray&quot; href=&quot;/user2589/pylease/compare/b882a542f3...98dc355102&quot; rel=&quot;noreferrer&quot;&gt;1 more commits »&lt;/a&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:ForkEvent/8831512195</id>
+    <published>2019-01-03T23:15:00Z</published>
+    <updated>2019-01-03T23:15:00Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/user2589/pylease"/>
+    <title type="html">user2589 forked user2589/pylease from bagrat/pylease</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;fork&quot;&gt;&lt;div class=&quot;body&quot;&gt;
+&lt;!-- fork --&gt;
+&lt;div class=&quot;d-flex flex-items-baseline border-bottom border-gray py-3&quot;&gt; 
+    &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+      &lt;div&gt;
+        &lt;div class=&quot;d-flex flex-items-baseline&quot;&gt;
+          &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            forked
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; title=&quot;user2589/pylease&quot; href=&quot;/user2589/pylease&quot; rel=&quot;noreferrer&quot;&gt;user2589/pylease&lt;/a&gt;
+            from
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/bagrat/pylease&quot; rel=&quot;noreferrer&quot;&gt;bagrat/pylease&lt;/a&gt;
+            &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+              &lt;relative-time datetime=&quot;2019-01-03T23:15:00Z&quot;&gt;Jan 3, 2019&lt;/relative-time&gt;
+            &lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;Box p-3 mt-2&quot;&gt;
+
+        &lt;div&gt;
+          &lt;div class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/bagrat/pylease&quot; rel=&quot;noreferrer&quot;&gt;bagrat/pylease&lt;/a&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;dashboard-break-word text-gray mt-1 repo-description&quot;&gt;
+            &lt;p&gt;Easy package versioning and release management&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;p class=&quot;f6 text-gray mt-2 mb-0&quot;&gt;
+              &lt;span class=&quot;d-inline-block text-gray mr-3&quot;&gt;
+                &lt;span class=&quot;repo-language-color ml-0&quot; style=&quot;background-color:#3572A5;&quot;&gt;&lt;/span&gt;
+                &lt;span itemprop=&quot;programmingLanguage&quot;&gt;Python&lt;/span&gt;
+              &lt;/span&gt;
+
+              &lt;span class=&quot;d-inline-block mr-3&quot;&gt;
+                  &lt;a class=&quot;muted-link&quot; href=&quot;/bagrat/pylease/stargazers&quot; rel=&quot;noreferrer&quot;&gt;
+                    &lt;svg class=&quot;octicon octicon-star mr-1&quot; viewBox=&quot;0 0 14 16&quot; version=&quot;1.1&quot; width=&quot;14&quot; height=&quot;16&quot; aria-hidden=&quot;true&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;10
+&lt;/a&gt;              &lt;/span&gt;
+
+
+              &lt;span&gt;Updated Nov 9&lt;/span&gt;
+          &lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssueCommentEvent/8830801260</id>
+    <published>2019-01-03T20:25:49Z</published>
+    <updated>2019-01-03T20:25:49Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/ssc-oscar/gather/pull/2#issuecomment-451266500"/>
+    <title type="html">user2589 commented on pull request ssc-oscar/gather#2</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_comment&quot;&gt;&lt;div class=&quot;body&quot;&gt;
+&lt;!-- issue_comment --&gt;
+&lt;div class=&quot;d-flex border-bottom border-gray py-3&quot;&gt;
+    &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline mb-2&quot;&gt;
+        &lt;div&gt;
+          &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+          
+          commented on
+          pull request
+          &lt;a class=&quot;link-gray-dark text-bold&quot; title=&quot;Added sf and gl scrapers. Both expect db name and collection name as …&quot; href=&quot;/ssc-oscar/gather/pull/2#issuecomment-451266500&quot; rel=&quot;noreferrer&quot;&gt;ssc-oscar/gather#2&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2019-01-03T20:25:49Z&quot;&gt;Jan 3, 2019&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;div class=&quot;message markdown-body Box p-3&quot;&gt;
+      &lt;div class=&quot;f6 mb-1&quot;&gt;
+        &lt;a title=&quot;Added sf and gl scrapers. Both expect db name and collection name as …&quot; class=&quot;link-gray&quot; href=&quot;/ssc-oscar/gather/pull/2#issuecomment-451266500&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar mr-1&quot; src=&quot;https://avatars2.githubusercontent.com/u/707904?s=32&amp;amp;v=4&quot; width=&quot;16&quot; height=&quot;16&quot; alt=&quot;@user2589&quot;&gt; &lt;span class=&quot;link-gray-dark text-bold&quot;&gt;user2589&lt;/span&gt; commented &lt;relative-time datetime=&quot;2019-01-03T20:25:49Z&quot;&gt;Jan 3, 2019&lt;/relative-time&gt;&lt;/a&gt;
+      &lt;/div&gt;
+        &lt;p&gt;BTW, I have a &lt;a href=&quot;https://github.com/CMUSTRUDEL/strudel.scraper&quot; rel=&quot;noreferrer&quot;&gt;package&lt;/a&gt; which could simplify this to:
+&lt;code&gt;api = GitHubAPI()
+for repo in api.all_repos(): ...
+&lt;/code&gt;
+It also supports rotating multiple tokens, …&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:CreateEvent/8816084870</id>
+    <published>2018-12-30T04:52:24Z</published>
+    <updated>2018-12-30T04:52:24Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/CMUSTRUDEL/strudel.ghutils/compare/master"/>
+    <title type="html">user2589 created a branch master in CMUSTRUDEL/strudel.ghutils</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;git-branch&quot;&gt;&lt;div class=&quot;body&quot;&gt;
+&lt;!-- create --&gt;
+&lt;div class=&quot;d-flex flex-items-baseline border-bottom border-gray py-3&quot;&gt;
+    &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+        &lt;div class=&quot;d-flex flex-items-baseline&quot;&gt;
+          &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            created a
+            branch
+            in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils&quot; rel=&quot;noreferrer&quot;&gt;CMUSTRUDEL/strudel.ghutils&lt;/a&gt;
+            &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+              &lt;relative-time datetime=&quot;2018-12-30T04:52:24Z&quot;&gt;Dec 30, 2018&lt;/relative-time&gt;
+            &lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3 mt-2&quot;&gt;
+      &lt;div&gt;
+        &lt;div class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+            &lt;a class=&quot;css-truncate css-truncate-target branch-name v-align-middle&quot; title=&quot;master&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils/tree/master&quot; rel=&quot;noreferrer&quot;&gt;master&lt;/a&gt; in &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils&quot; rel=&quot;noreferrer&quot;&gt;CMUSTRUDEL/strudel.ghutils&lt;/a&gt;
+        &lt;/div&gt;
+
+
+          &lt;p class=&quot;f6 text-gray mt-2 mb-0&quot;&gt;
+            &lt;span&gt;Updated Jan 9&lt;/span&gt;
+          &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:CreateEvent/8815921804</id>
+    <published>2018-12-30T01:48:28Z</published>
+    <updated>2018-12-30T01:48:28Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/CMUSTRUDEL/strudel.ghutils"/>
+    <title type="html">user2589 created a repository CMUSTRUDEL/strudel.ghutils</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;repo&quot;&gt;&lt;div class=&quot;body&quot;&gt;
+&lt;!-- create --&gt;
+&lt;div class=&quot;d-flex flex-items-baseline border-bottom border-gray py-3&quot;&gt;
+    &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+        &lt;div class=&quot;d-flex flex-items-baseline&quot;&gt;
+          &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            created a
+            repository
+            
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils&quot; rel=&quot;noreferrer&quot;&gt;CMUSTRUDEL/strudel.ghutils&lt;/a&gt;
+            &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+              &lt;relative-time datetime=&quot;2018-12-30T01:48:28Z&quot;&gt;Dec 30, 2018&lt;/relative-time&gt;
+            &lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3 mt-2&quot;&gt;
+      &lt;div&gt;
+        &lt;div class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/CMUSTRUDEL/strudel.ghutils&quot; rel=&quot;noreferrer&quot;&gt;CMUSTRUDEL/strudel.ghutils&lt;/a&gt;
+        &lt;/div&gt;
+
+          &lt;div class=&quot;dashboard-break-word text-gray mt-1 repo-description&quot;&gt;
+            &lt;p&gt;Interface to undocumented GitHub API&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;p class=&quot;f6 text-gray mt-2 mb-0&quot;&gt;
+            &lt;span&gt;Updated Jan 9&lt;/span&gt;
+          &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssuesEvent/8721229068</id>
+    <published>2018-12-08T20:49:09Z</published>
+    <updated>2018-12-08T20:49:09Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/user2589/Q/issues/14"/>
+    <title type="html">user2589 opened an issue in user2589/Q</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_opened&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- issues --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline mb-2&quot;&gt;
+        &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            opened
+            an issue in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589/Q&quot; rel=&quot;noreferrer&quot;&gt;user2589/Q&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2018-12-08T20:49:09Z&quot;&gt;Dec 8, 2018&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3&quot;&gt;
+      &lt;svg height=&quot;16&quot; aria-label=&quot;Issue&quot; class=&quot;octicon octicon-issue-opened open d-inline-block mt-1 float-left&quot; viewBox=&quot;0 0 14 16&quot; version=&quot;1.1&quot; width=&quot;14&quot; role=&quot;img&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+      &lt;div class=&quot;ml-4&quot;&gt;
+        &lt;span class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+          &lt;a title=&quot;BUILD: implement test suite&quot; class=&quot;text-gray-dark&quot; aria-label=&quot;BUILD: implement test suite&quot; href=&quot;/user2589/Q/issues/14&quot; rel=&quot;noreferrer&quot;&gt;BUILD: implement test suite&lt;/a&gt;
+        &lt;/span&gt;
+        &lt;span class=&quot;f4 text-gray-light ml-1&quot;&gt;#14&lt;/span&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssuesEvent/8721227560</id>
+    <published>2018-12-08T20:48:12Z</published>
+    <updated>2018-12-08T20:48:12Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/user2589/Q/issues/13"/>
+    <title type="html">user2589 opened an issue in user2589/Q</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_opened&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- issues --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline mb-2&quot;&gt;
+        &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            opened
+            an issue in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589/Q&quot; rel=&quot;noreferrer&quot;&gt;user2589/Q&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2018-12-08T20:48:12Z&quot;&gt;Dec 8, 2018&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3&quot;&gt;
+      &lt;svg height=&quot;16&quot; aria-label=&quot;Issue&quot; class=&quot;octicon octicon-issue-opened open d-inline-block mt-1 float-left&quot; viewBox=&quot;0 0 14 16&quot; version=&quot;1.1&quot; width=&quot;14&quot; role=&quot;img&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+      &lt;div class=&quot;ml-4&quot;&gt;
+        &lt;span class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+          &lt;a title=&quot;FEAT: implement websockets feed for events&quot; class=&quot;text-gray-dark&quot; aria-label=&quot;FEAT: implement websockets feed for events&quot; href=&quot;/user2589/Q/issues/13&quot; rel=&quot;noreferrer&quot;&gt;FEAT: implement websockets feed for events&lt;/a&gt;
+        &lt;/span&gt;
+        &lt;span class=&quot;f4 text-gray-light ml-1&quot;&gt;#13&lt;/span&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssuesEvent/8721226704</id>
+    <published>2018-12-08T20:47:44Z</published>
+    <updated>2018-12-08T20:47:44Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/user2589/Q/issues/12"/>
+    <title type="html">user2589 opened an issue in user2589/Q</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_opened&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- issues --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline mb-2&quot;&gt;
+        &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            opened
+            an issue in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589/Q&quot; rel=&quot;noreferrer&quot;&gt;user2589/Q&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2018-12-08T20:47:44Z&quot;&gt;Dec 8, 2018&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3&quot;&gt;
+      &lt;svg height=&quot;16&quot; aria-label=&quot;Issue&quot; class=&quot;octicon octicon-issue-opened open d-inline-block mt-1 float-left&quot; viewBox=&quot;0 0 14 16&quot; version=&quot;1.1&quot; width=&quot;14&quot; role=&quot;img&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+      &lt;div class=&quot;ml-4&quot;&gt;
+        &lt;span class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+          &lt;a title=&quot;FEAT: implement events API&quot; class=&quot;text-gray-dark&quot; aria-label=&quot;FEAT: implement events API&quot; href=&quot;/user2589/Q/issues/12&quot; rel=&quot;noreferrer&quot;&gt;FEAT: implement events API&lt;/a&gt;
+        &lt;/span&gt;
+        &lt;span class=&quot;f4 text-gray-light ml-1&quot;&gt;#12&lt;/span&gt;
+          &lt;div class=&quot;dashboard-break-word lh-condensed mb-2 mt-1&quot;&gt;
+            &lt;p&gt;get last 20 (to display on taubleau when starting up)&lt;/p&gt;
+          &lt;/div&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssuesEvent/8721225428</id>
+    <published>2018-12-08T20:47:01Z</published>
+    <updated>2018-12-08T20:47:01Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/user2589/Q/issues/11"/>
+    <title type="html">user2589 opened an issue in user2589/Q</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_opened&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- issues --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline mb-2&quot;&gt;
+        &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            opened
+            an issue in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589/Q&quot; rel=&quot;noreferrer&quot;&gt;user2589/Q&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2018-12-08T20:47:01Z&quot;&gt;Dec 8, 2018&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3&quot;&gt;
+      &lt;svg height=&quot;16&quot; aria-label=&quot;Issue&quot; class=&quot;octicon octicon-issue-opened open d-inline-block mt-1 float-left&quot; viewBox=&quot;0 0 14 16&quot; version=&quot;1.1&quot; width=&quot;14&quot; role=&quot;img&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+      &lt;div class=&quot;ml-4&quot;&gt;
+        &lt;span class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+          &lt;a title=&quot;FEAT: update taubleau to use CSS grid&quot; class=&quot;text-gray-dark&quot; aria-label=&quot;FEAT: update taubleau to use CSS grid&quot; href=&quot;/user2589/Q/issues/11&quot; rel=&quot;noreferrer&quot;&gt;FEAT: update taubleau to use CSS grid&lt;/a&gt;
+        &lt;/span&gt;
+        &lt;span class=&quot;f4 text-gray-light ml-1&quot;&gt;#11&lt;/span&gt;
+          &lt;div class=&quot;dashboard-break-word lh-condensed mb-2 mt-1&quot;&gt;
+            &lt;p&gt;perhaps use bootstrap&lt;/p&gt;
+          &lt;/div&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssuesEvent/8721224270</id>
+    <published>2018-12-08T20:46:14Z</published>
+    <updated>2018-12-08T20:46:14Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/user2589/Q/issues/10"/>
+    <title type="html">user2589 opened an issue in user2589/Q</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_opened&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- issues --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline mb-2&quot;&gt;
+        &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            opened
+            an issue in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589/Q&quot; rel=&quot;noreferrer&quot;&gt;user2589/Q&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2018-12-08T20:46:14Z&quot;&gt;Dec 8, 2018&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3&quot;&gt;
+      &lt;svg height=&quot;16&quot; aria-label=&quot;Issue&quot; class=&quot;octicon octicon-issue-opened open d-inline-block mt-1 float-left&quot; viewBox=&quot;0 0 14 16&quot; version=&quot;1.1&quot; width=&quot;14&quot; role=&quot;img&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+      &lt;div class=&quot;ml-4&quot;&gt;
+        &lt;span class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+          &lt;a title=&quot;FEAT: create favicon.ico&quot; class=&quot;text-gray-dark&quot; aria-label=&quot;FEAT: create favicon.ico&quot; href=&quot;/user2589/Q/issues/10&quot; rel=&quot;noreferrer&quot;&gt;FEAT: create favicon.ico&lt;/a&gt;
+        &lt;/span&gt;
+        &lt;span class=&quot;f4 text-gray-light ml-1&quot;&gt;#10&lt;/span&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssuesEvent/8721223789</id>
+    <published>2018-12-08T20:45:55Z</published>
+    <updated>2018-12-08T20:45:55Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/user2589/Q/issues/9"/>
+    <title type="html">user2589 opened an issue in user2589/Q</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_opened&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- issues --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline mb-2&quot;&gt;
+        &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            opened
+            an issue in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589/Q&quot; rel=&quot;noreferrer&quot;&gt;user2589/Q&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2018-12-08T20:45:55Z&quot;&gt;Dec 8, 2018&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3&quot;&gt;
+      &lt;svg height=&quot;16&quot; aria-label=&quot;Issue&quot; class=&quot;octicon octicon-issue-opened open d-inline-block mt-1 float-left&quot; viewBox=&quot;0 0 14 16&quot; version=&quot;1.1&quot; width=&quot;14&quot; role=&quot;img&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+      &lt;div class=&quot;ml-4&quot;&gt;
+        &lt;span class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+          &lt;a title=&quot;FEAT: implement update customer API&quot; class=&quot;text-gray-dark&quot; aria-label=&quot;FEAT: implement update customer API&quot; href=&quot;/user2589/Q/issues/9&quot; rel=&quot;noreferrer&quot;&gt;FEAT: implement update customer API&lt;/a&gt;
+        &lt;/span&gt;
+        &lt;span class=&quot;f4 text-gray-light ml-1&quot;&gt;#9&lt;/span&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssuesEvent/8721223332</id>
+    <published>2018-12-08T20:45:36Z</published>
+    <updated>2018-12-08T20:45:36Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/user2589/Q/issues/8"/>
+    <title type="html">user2589 opened an issue in user2589/Q</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_opened&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- issues --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline mb-2&quot;&gt;
+        &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            opened
+            an issue in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589/Q&quot; rel=&quot;noreferrer&quot;&gt;user2589/Q&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2018-12-08T20:45:36Z&quot;&gt;Dec 8, 2018&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3&quot;&gt;
+      &lt;svg height=&quot;16&quot; aria-label=&quot;Issue&quot; class=&quot;octicon octicon-issue-opened open d-inline-block mt-1 float-left&quot; viewBox=&quot;0 0 14 16&quot; version=&quot;1.1&quot; width=&quot;14&quot; role=&quot;img&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+      &lt;div class=&quot;ml-4&quot;&gt;
+        &lt;span class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+          &lt;a title=&quot;FEAT: implement delete customer API&quot; class=&quot;text-gray-dark&quot; aria-label=&quot;FEAT: implement delete customer API&quot; href=&quot;/user2589/Q/issues/8&quot; rel=&quot;noreferrer&quot;&gt;FEAT: implement delete customer API&lt;/a&gt;
+        &lt;/span&gt;
+        &lt;span class=&quot;f4 text-gray-light ml-1&quot;&gt;#8&lt;/span&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssuesEvent/8721222559</id>
+    <published>2018-12-08T20:45:07Z</published>
+    <updated>2018-12-08T20:45:07Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/user2589/Q/issues/7"/>
+    <title type="html">user2589 opened an issue in user2589/Q</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_opened&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- issues --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline mb-2&quot;&gt;
+        &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            opened
+            an issue in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589/Q&quot; rel=&quot;noreferrer&quot;&gt;user2589/Q&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2018-12-08T20:45:07Z&quot;&gt;Dec 8, 2018&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3&quot;&gt;
+      &lt;svg height=&quot;16&quot; aria-label=&quot;Issue&quot; class=&quot;octicon octicon-issue-opened open d-inline-block mt-1 float-left&quot; viewBox=&quot;0 0 14 16&quot; version=&quot;1.1&quot; width=&quot;14&quot; role=&quot;img&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+      &lt;div class=&quot;ml-4&quot;&gt;
+        &lt;span class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+          &lt;a title=&quot;FEAT: update tableau page (index.html) to use tableau API to get categories&quot; class=&quot;text-gray-dark&quot; aria-label=&quot;FEAT: update tableau page (index.html) to use tableau API to get categories&quot; href=&quot;/user2589/Q/issues/7&quot; rel=&quot;noreferrer&quot;&gt;FEAT: update tableau page (index.html) to use tableau API to get categories&lt;/a&gt;
+        &lt;/span&gt;
+        &lt;span class=&quot;f4 text-gray-light ml-1&quot;&gt;#7&lt;/span&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssuesEvent/8721221338</id>
+    <published>2018-12-08T20:44:18Z</published>
+    <updated>2018-12-08T20:44:18Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/user2589/Q/issues/6"/>
+    <title type="html">user2589 opened an issue in user2589/Q</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_opened&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- issues --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline mb-2&quot;&gt;
+        &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            opened
+            an issue in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589/Q&quot; rel=&quot;noreferrer&quot;&gt;user2589/Q&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2018-12-08T20:44:18Z&quot;&gt;Dec 8, 2018&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3&quot;&gt;
+      &lt;svg height=&quot;16&quot; aria-label=&quot;Issue&quot; class=&quot;octicon octicon-issue-opened open d-inline-block mt-1 float-left&quot; viewBox=&quot;0 0 14 16&quot; version=&quot;1.1&quot; width=&quot;14&quot; role=&quot;img&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+      &lt;div class=&quot;ml-4&quot;&gt;
+        &lt;span class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+          &lt;a title=&quot;FEAT: implement operator dashboard&quot; class=&quot;text-gray-dark&quot; aria-label=&quot;FEAT: implement operator dashboard&quot; href=&quot;/user2589/Q/issues/6&quot; rel=&quot;noreferrer&quot;&gt;FEAT: implement operator dashboard&lt;/a&gt;
+        &lt;/span&gt;
+        &lt;span class=&quot;f4 text-gray-light ml-1&quot;&gt;#6&lt;/span&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssuesEvent/8721220139</id>
+    <published>2018-12-08T20:43:31Z</published>
+    <updated>2018-12-08T20:43:31Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/user2589/Q/issues/5"/>
+    <title type="html">user2589 opened an issue in user2589/Q</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_opened&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- issues --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline mb-2&quot;&gt;
+        &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            opened
+            an issue in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589/Q&quot; rel=&quot;noreferrer&quot;&gt;user2589/Q&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2018-12-08T20:43:31Z&quot;&gt;Dec 8, 2018&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3&quot;&gt;
+      &lt;svg height=&quot;16&quot; aria-label=&quot;Issue&quot; class=&quot;octicon octicon-issue-opened open d-inline-block mt-1 float-left&quot; viewBox=&quot;0 0 14 16&quot; version=&quot;1.1&quot; width=&quot;14&quot; role=&quot;img&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+      &lt;div class=&quot;ml-4&quot;&gt;
+        &lt;span class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+          &lt;a title=&quot;FEAT: customer name generation&quot; class=&quot;text-gray-dark&quot; aria-label=&quot;FEAT: customer name generation&quot; href=&quot;/user2589/Q/issues/5&quot; rel=&quot;noreferrer&quot;&gt;FEAT: customer name generation&lt;/a&gt;
+        &lt;/span&gt;
+        &lt;span class=&quot;f4 text-gray-light ml-1&quot;&gt;#5&lt;/span&gt;
+          &lt;div class=&quot;dashboard-break-word lh-condensed mb-2 mt-1&quot;&gt;
+            &lt;p&gt;should be in customization module, accepts category, shift and customer objects.
+Default implementation:
+ + &lt;/p&gt;
+          &lt;/div&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssuesEvent/8721217210</id>
+    <published>2018-12-08T20:41:40Z</published>
+    <updated>2018-12-08T20:41:40Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/user2589/Q/issues/4"/>
+    <title type="html">user2589 opened an issue in user2589/Q</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_opened&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- issues --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline mb-2&quot;&gt;
+        &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            opened
+            an issue in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589/Q&quot; rel=&quot;noreferrer&quot;&gt;user2589/Q&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2018-12-08T20:41:40Z&quot;&gt;Dec 8, 2018&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3&quot;&gt;
+      &lt;svg height=&quot;16&quot; aria-label=&quot;Issue&quot; class=&quot;octicon octicon-issue-opened open d-inline-block mt-1 float-left&quot; viewBox=&quot;0 0 14 16&quot; version=&quot;1.1&quot; width=&quot;14&quot; role=&quot;img&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+      &lt;div class=&quot;ml-4&quot;&gt;
+        &lt;span class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+          &lt;a title=&quot;FEAT: implement admin panel&quot; class=&quot;text-gray-dark&quot; aria-label=&quot;FEAT: implement admin panel&quot; href=&quot;/user2589/Q/issues/4&quot; rel=&quot;noreferrer&quot;&gt;FEAT: implement admin panel&lt;/a&gt;
+        &lt;/span&gt;
+        &lt;span class=&quot;f4 text-gray-light ml-1&quot;&gt;#4&lt;/span&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssuesEvent/8721216643</id>
+    <published>2018-12-08T20:41:18Z</published>
+    <updated>2018-12-08T20:41:18Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/user2589/Q/issues/3"/>
+    <title type="html">user2589 opened an issue in user2589/Q</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_opened&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- issues --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline mb-2&quot;&gt;
+        &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            opened
+            an issue in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589/Q&quot; rel=&quot;noreferrer&quot;&gt;user2589/Q&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2018-12-08T20:41:18Z&quot;&gt;Dec 8, 2018&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3&quot;&gt;
+      &lt;svg height=&quot;16&quot; aria-label=&quot;Issue&quot; class=&quot;octicon octicon-issue-opened open d-inline-block mt-1 float-left&quot; viewBox=&quot;0 0 14 16&quot; version=&quot;1.1&quot; width=&quot;14&quot; role=&quot;img&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+      &lt;div class=&quot;ml-4&quot;&gt;
+        &lt;span class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+          &lt;a title=&quot;FEAT: implement auth&quot; class=&quot;text-gray-dark&quot; aria-label=&quot;FEAT: implement auth&quot; href=&quot;/user2589/Q/issues/3&quot; rel=&quot;noreferrer&quot;&gt;FEAT: implement auth&lt;/a&gt;
+        &lt;/span&gt;
+        &lt;span class=&quot;f4 text-gray-light ml-1&quot;&gt;#3&lt;/span&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:IssuesEvent/8721216212</id>
+    <published>2018-12-08T20:41:01Z</published>
+    <updated>2018-12-08T20:41:01Z</updated>
+    <link type="text/html" rel="alternate" href="https://github.com/user2589/Q/issues/2"/>
+    <title type="html">user2589 opened an issue in user2589/Q</title>
+    <author>
+      <name>user2589</name>
+      <uri>https://github.com/user2589</uri>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars2.githubusercontent.com/u/707904?s=30&amp;v=4"/>
+    <content type="html">&lt;div class=&quot;issues_opened&quot;&gt;&lt;div class=&quot;body&quot;&gt;&lt;!-- issues --&gt;
+&lt;div class=&quot;d-flex border-bottom py-3&quot;&gt;
+  &lt;span class=&quot;mr-3&quot;&gt;
+  &lt;a class=&quot;d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;&lt;img class=&quot;avatar&quot; src=&quot;https://avatars1.githubusercontent.com/u/707904?s=64&amp;amp;v=4&quot; width=&quot;32&quot; height=&quot;32&quot; alt=&quot;@user2589&quot;&gt;&lt;/a&gt;
+&lt;/span&gt;
+
+  &lt;div class=&quot;d-flex flex-column width-full&quot;&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;d-flex flex-items-baseline mb-2&quot;&gt;
+        &lt;div&gt;
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589&quot; rel=&quot;noreferrer&quot;&gt;user2589&lt;/a&gt;
+            
+            opened
+            an issue in
+            &lt;a class=&quot;link-gray-dark no-underline text-bold wb-break-all d-inline-block&quot; href=&quot;/user2589/Q&quot; rel=&quot;noreferrer&quot;&gt;user2589/Q&lt;/a&gt;
+          &lt;span class=&quot;f6 text-gray-light no-wrap ml-1&quot;&gt;
+            &lt;relative-time datetime=&quot;2018-12-08T20:41:01Z&quot;&gt;Dec 8, 2018&lt;/relative-time&gt;
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;Box p-3&quot;&gt;
+      &lt;svg height=&quot;16&quot; aria-label=&quot;Issue&quot; class=&quot;octicon octicon-issue-opened open d-inline-block mt-1 float-left&quot; viewBox=&quot;0 0 14 16&quot; version=&quot;1.1&quot; width=&quot;14&quot; role=&quot;img&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+      &lt;div class=&quot;ml-4&quot;&gt;
+        &lt;span class=&quot;f4 lh-condensed text-bold text-gray-dark&quot;&gt;
+          &lt;a title=&quot;FEAT: implement get categories API for tableau&quot; class=&quot;text-gray-dark&quot; aria-label=&quot;FEAT: implement get categories API for tableau&quot; href=&quot;/user2589/Q/issues/2&quot; rel=&quot;noreferrer&quot;&gt;FEAT: implement get categories API for tableau&lt;/a&gt;
+        &lt;/span&gt;
+        &lt;span class=&quot;f4 text-gray-light ml-1&quot;&gt;#2&lt;/span&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</content>
+  </entry>
+</feed>

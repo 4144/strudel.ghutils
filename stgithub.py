@@ -250,6 +250,33 @@ def _parse_timeline_update(bs4_tree):
             yield record_month, month_data
 
 
+def _extract_activity_feed_links(text):
+    tree = BeautifulSoup(text, 'html.parser')
+
+    date = None
+    for span in tree.find_all('span'):
+        if 'f6' not in span['class']:
+            continue
+        try:
+            date = pd.to_datetime(span.text.strip()).strftime("%Y-%m-%d")
+        except ValueError:
+            continue
+        break
+
+    links = []
+    for link in tree.find_all('a'):
+        href = link.get('href', '')
+        chunks = href.split("/")
+        # hrefs start with "/" so chunks[0] is an empty string
+        # this is why 'commit/issue/tree' is chunks[3], not [2]
+        if len(chunks) < 5 or \
+                chunks[3] not in ('commit', 'issue', 'tree'):
+            continue
+        if href not in links:
+            links.append(href)
+            yield (date, href)
+
+
 def guard(func):
     # TODO: once released in stutils, reuse from there
     semaphore = threading.Lock()
@@ -404,9 +431,9 @@ class Scraper(object):
                 (<%Y-%m-%d date>, link to the activity)
                 It seems like this feed only includes tags and commits
 
-        >>> list(Scraper().links_to_recent_user_activity('user2589'))
+        >>> list(Scraper().links_to_recent_user_activity('user2589'))  # doctest: +SKIP
         [('2018-12-01', '/user2589/Q/tree/master'),
-         ('2018-12-01'),
+         ('2018-12-01',
           '/user2589/Q/commit/9184f20f939a70e3930ef762cc83906220433fc8'),
          ('2018-11-20', '/user2589/TAC_Github/tree/master'),
          ...]
@@ -414,32 +441,6 @@ class Scraper(object):
         warnings.warn(
             "This method is know to return incomplete data."
             "Proceed with caution.", DeprecationWarning)
-
-        def extract_links(text):
-            tree = ElementTree.fromstring(text)
-
-            date = None
-            for span in tree.iter('span'):
-                if 'f6' not in span.attrib.get('class', '').split(" "):
-                    continue
-                try:
-                    date = pd.to_datetime(span.text.strip())
-                except ValueError:
-                    continue
-                break
-
-            links = []
-            for link in tree.iter('a'):
-                href = link.attrib.get('href', '')
-                chunks = href.split("/")
-                # hrefs start with "/" so chunks[0] is an empty string
-                # this is why 'commit/issue/tree' is chunks[3], not [2]
-                if len(chunks) < 5 or \
-                        chunks[3] not in ('commit', 'issue', 'tree'):
-                    continue
-                if href not in links:
-                    links.append(href)
-                    yield (date, href)
 
         page = None
         while True:
@@ -453,8 +454,9 @@ class Scraper(object):
 
             for record in activity_log:
                 for chunk in record['content']:
-                    for ts, link in extract_links(chunk['value'].encode('utf8')):
-                        yield ts.strftime("%Y-%m-%d"), link
+                    for date, link in _extract_activity_feed_links(
+                            chunk['value'].encode('utf8')):
+                        yield date, link
 
     def full_user_activity_timeline(self, user, start=None, to=None):
         # type: (str, str, str) -> Generator[Tuple[str, Dict]]
