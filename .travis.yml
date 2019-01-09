@@ -13,24 +13,32 @@ install:
 script:
   - make test
 
-deploy:
-  - provider: pages
-    skip-cleanup: true
-    github-token: $GH_TOKEN
-    keep-history: true
-    on:
-      branch: master
-    local-dir: docs/build/html
+# jobs instead of deploy to deploy only once (for Python3 build)
+jobs:
+  fast_finish: true
+  include:
+  - stage: upload to PYPI, build docs and create a release
+    python: 3.5
+    install: skip
+    script: make html
+    deploy:
+      - provider: pages
+        skip-cleanup: true
+        github-token: $GH_TOKEN
+        keep-history: true
+        on:
+          branch: master
+        local-dir: docs/build/html
 
-  - provider: script
-    skip_cleanup: true
-    on:
-      branch: master
-    script: make publish
+      - provider: script
+        skip_cleanup: true
+        on:
+          branch: master
+        script: make publish
 
-  - provider: releases
-    skip-cleanup: true
-    api_key: $GH_TOKEN
-    on:
-      tags: true
-    file: dist/*
+      - provider: releases
+        skip-cleanup: true
+        api_key: $GH_TOKEN
+        on:
+          tags: true
+        file: dist/*
