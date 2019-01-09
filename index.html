@@ -1,0 +1,343 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Reference &#8212; strudel.ghutils 0.0.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="reference">
+<h1>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-stgithub"></span><p>This module provides interfaces to “unofficial GitHub API”,
+i.e. data available in the user interface but not in the official API.</p>
+<p>This includes:</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>user contributions timeline (all repositories contributed to,</dt>
+<dd>organizations joined publicly, created repos, reported issues, etc.).
+There is no official API for this, and public datasets like GHTorrent
+do not report some of these events.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>user contribution stats (just number of contributions per year).</dt>
+<dd>You can get the same information from GHTorrent,
+but this method is only taking one HTTP request and thus it’s much faster.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>get weekly contributors stats for a projects</dt>
+<dd>(number of Lines Of Code contributed per week by top 100 contributors
+since the beginning of the project).
+LOC information is not available via API, and similar stats for commits take
+multiple requests via official API.</dd>
+</dl>
+</li>
+</ul>
+<dl class="class">
+<dt id="stgithub.Scraper">
+<em class="property">class </em><code class="descclassname">stgithub.</code><code class="descname">Scraper</code><a class="reference internal" href="_modules/stgithub.html#Scraper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stgithub.Scraper" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to access “unofficial GitHub API”</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This “unofficial API” is rate limited, just as the official one.
+The rate limit is 40 requests in 80 seconds, and some calls take
+multiple requests. So, for example, parsing a user activity timeline
+typically takes couple minutes.
+Use this “API” with caution as it might be extremely slow.</p>
+</div>
+<p>This class provides access to several functions available</p>
+<dl class="method">
+<dt id="stgithub.Scraper.full_user_activity_timeline">
+<code class="descname">full_user_activity_timeline</code><span class="sig-paren">(</span><em>user</em>, <em>start=None</em>, <em>to=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/stgithub.html#Scraper.full_user_activity_timeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stgithub.Scraper.full_user_activity_timeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of public user contributions, by month by repository.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) – GitHub login of the user to get activity for.</li>
+<li><strong>start</strong> (<em>str</em>) – date to start with, e.g. ‘2017-01’ or ‘2017-01-01’.
+<cite>datetime</cite> objects should also work.</li>
+<li><strong>to</strong> (<em>str</em>) – upper bound of date ranges to parse, same as <cite>start</cite>.
+<strong>Note</strong>: the day is 1 by default, i.e. ‘2017-01’
+will be interpreted as <strong>1st</strong> of January 2017.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Yields:</th><td class="field-body"><p class="first"><em>Dict[str, int]</em> –     A generator of activity dictionaries.
+Each dict has fields <cite>month</cite>, a <cite>%Y-%m</cite> formatted month, and
+<cite>repo</cite>, a repository slug. Other fields indicate number of
+contributions of a given type:</p>
+<ul class="last simple">
+<li><cite>commits</cite>: number of commits.</li>
+<li><cite>issues</cite>: number of reported issues.</li>
+<li><dl class="first docutils">
+<dt><cite>reviews</cite>: number of reviewed pull requests.</dt>
+<dd>GitHub counts any commented pull request as reviewed,
+also ignoring any code comments.</dd>
+</dl>
+</li>
+<li><cite>pull_requests</cite>: number of pull requsts submitted.</li>
+<li><cite>created_repository</cite>: can be only 1.</li>
+<li><dl class="first docutils">
+<dt><cite>joined_org</cite>: can be only 1.</dt>
+<dd>The repository slug in this case is the GitHub org name.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><cite>private</cite>: all contributions in private repositories combined,</dt>
+<dd>if user enabled anonymous reporting of private activities.
+The repository slug in this case is an empty string.</dd>
+</dl>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The output of this method is suitable for a pd.DataFrame constructor:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Scraper</span><span class="p">()</span><span class="o">.</span><span class="n">full_user_activity_timeline</span><span class="p">(</span><span class="s1">&#39;user2589&#39;</span><span class="p">))</span>
+<span class="go">     commits   ...     reviews</span>
+<span class="gp">...</span>
+<span class="go">111      NaN   ...         NaN</span>
+<span class="go">112      NaN   ...         NaN</span>
+<span class="go">113      1.0   ...         NaN</span>
+<span class="go">&lt;BLANKLINE&gt;</span>
+<span class="go">[114 rows x 9 columns]</span>
+</pre></div>
+</div>
+<p>It is even better to index on month+repo and replace NaNs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Scraper</span><span class="p">()</span><span class="o">.</span><span class="n">full_user_activity_timeline</span><span class="p">(</span><span class="s1">&#39;user2589&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="s1">&#39;repo&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="go">                                         commits   ...     reviews</span>
+<span class="go">month   repo                                       ...</span>
+<span class="gp">...</span>
+<span class="go">2012-05 user2589/minicms                      11   ...           0</span>
+<span class="go">2011-09 alsoicode/django-admin-sortable        0   ...           0</span>
+<span class="go">2011-08 user2589/django-rosetta                0   ...           0</span>
+<span class="go">        mbi/django-rosetta                     0   ...           0</span>
+<span class="go">2005-03 user2589/schooligan                    1   ...           0</span>
+<span class="go">&lt;BLANKLINE&gt;</span>
+<span class="go">[114 rows x 7 columns]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="stgithub.Scraper.links_to_recent_user_activity">
+<code class="descname">links_to_recent_user_activity</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/stgithub.html#Scraper.links_to_recent_user_activity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stgithub.Scraper.links_to_recent_user_activity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get user events as a 2-tuple generator: (date, link).</p>
+<p>Events include: commits, issues and refs creation (tags/branches).
+Internally, this method is using Atom feed.
+The result includes up to couple month of activity;
+sometimes it also misses up to one month of recent events.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method is know to return incomplete data.
+Proceed with caution.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user</strong> (<em>str</em>) – The GitHub login of the user.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>A generator of two-tuples:</dt>
+<dd>(&lt;%Y-%m-%d date&gt;, link to the activity)
+It seems like this feed only includes tags and commits</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Generator</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">Scraper</span><span class="p">()</span><span class="o">.</span><span class="n">links_to_recent_user_activity</span><span class="p">(</span><span class="s1">&#39;user2589&#39;</span><span class="p">))</span>  <span class="c1"># doctest: +SKIP</span>
+<span class="go">[(&#39;2018-12-01&#39;, &#39;/user2589/Q/tree/master&#39;),</span>
+<span class="go"> (&#39;2018-12-01&#39;,</span>
+<span class="go">  &#39;/user2589/Q/commit/9184f20f939a70e3930ef762cc83906220433fc8&#39;),</span>
+<span class="go"> (&#39;2018-11-20&#39;, &#39;/user2589/TAC_Github/tree/master&#39;),</span>
+<span class="go"> ...]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="stgithub.Scraper.project_contributor_stats">
+<code class="descname">project_contributor_stats</code><span class="sig-paren">(</span><em>repo_slug</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/stgithub.html#Scraper.project_contributor_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stgithub.Scraper.project_contributor_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get top 100 contributors weekly commit stats over the project history</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>repo_slug</strong> (<em>str</em>) – &lt;owner_login&gt;/&lt;repo_name&gt;</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>A list of top 100 contributors in the repo, with their logins,</dt>
+<dd>total number of commits and weekly contribution counts as number
+of lines added, changed or deleted. Note that weeks are
+started on Sunday and represented by a Unix timestamp.</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Scraper</span><span class="p">()</span><span class="o">.</span><span class="n">project_contributor_stats</span><span class="p">(</span><span class="s1">&#39;pandas-dev/pandas&#39;</span><span class="p">)</span>
+<span class="go">[{u&#39;author&#39;: {u&#39;avatar&#39;: u&#39;https://avatars0.githubusercontent.com/u/1435085?s=60&amp;v=4&#39;,</span>
+<span class="go">   u&#39;hovercard_url&#39;: u&#39;/hovercards?user_id=1435085&#39;,</span>
+<span class="go">   u&#39;id&#39;: 1435085,</span>
+<span class="go">   u&#39;login&#39;: u&#39;blbradley&#39;,</span>
+<span class="go">   u&#39;path&#39;: u&#39;/blbradley&#39;},</span>
+<span class="go">  u&#39;total&#39;: 8,</span>
+<span class="go">  u&#39;weeks&#39;: [{u&#39;a&#39;: 0, u&#39;c&#39;: 0, u&#39;d&#39;: 0, u&#39;w&#39;: 1249171200},</span>
+<span class="go">   {u&#39;a&#39;: 0, u&#39;c&#39;: 0, u&#39;d&#39;: 0, u&#39;w&#39;: 1249776000},</span>
+<span class="go">   {u&#39;a&#39;: 0, u&#39;c&#39;: 0, u&#39;d&#39;: 0, u&#39;w&#39;: 1250380800},</span>
+<span class="gp">...</span>
+<span class="go">}]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="stgithub.Scraper.user_daily_contrib_num">
+<code class="descname">user_daily_contrib_num</code><span class="sig-paren">(</span><em>user</em>, <em>year</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/stgithub.html#Scraper.user_daily_contrib_num"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stgithub.Scraper.user_daily_contrib_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get number of daily contributions of a GitHub user in a given year.
+This method represents the white and green grid in the profile page.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) – The GitHub login of the user to get stats for.</li>
+<li><strong>year</strong> (<em>int</em>) – Year of contributions to get</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>A dictionary with keys being %Y-%m-%d formatted dates, and</dt>
+<dd><p class="first last">values being the number of contributions. This method does not
+differentiate types of contributions, i.e. it is a sum
+of commits, issues, submitted and reviewed pull requests, etc.</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Scraper</span><span class="p">()</span><span class="o">.</span><span class="n">user_daily_contrib_num</span><span class="p">(</span><span class="s1">&#39;user2589&#39;</span><span class="p">,</span> <span class="mi">2018</span><span class="p">)</span>
+<span class="go">{&#39;2018-01-01&#39;: 0,</span>
+<span class="go"> &#39;2018-01-02&#39;: 15,</span>
+<span class="go"> ...</span>
+<span class="go"> &#39;2018-12-31&#39;: 0}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">strudel.ghutils</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Marat (@cmu.edu).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

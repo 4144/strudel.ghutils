@@ -1,0 +1,677 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>stgithub &#8212; strudel.ghutils 0.0.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for stgithub</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides interfaces to &quot;unofficial GitHub API&quot;,</span>
+<span class="sd">i.e. data available in the user interface but not in the official API.</span>
+
+<span class="sd">This includes:</span>
+
+<span class="sd">- user contributions timeline (all repositories contributed to,</span>
+<span class="sd">    organizations joined publicly, created repos, reported issues, etc.).</span>
+<span class="sd">    There is no official API for this, and public datasets like GHTorrent</span>
+<span class="sd">    do not report some of these events.</span>
+<span class="sd">- user contribution stats (just number of contributions per year).</span>
+<span class="sd">    You can get the same information from GHTorrent,</span>
+<span class="sd">    but this method is only taking one HTTP request and thus it&#39;s much faster.</span>
+<span class="sd">- get weekly contributors stats for a projects</span>
+<span class="sd">    (number of Lines Of Code contributed per week by top 100 contributors</span>
+<span class="sd">    since the beginning of the project).</span>
+<span class="sd">    LOC information is not available via API, and similar stats for commits take</span>
+<span class="sd">    multiple requests via official API.</span>
+
+
+<span class="sd">.. autoclass:: Scraper</span>
+<span class="sd">    :members: full_user_activity_timeline, project_contributor_stats,</span>
+<span class="sd">        user_daily_contrib_num, links_to_recent_user_activity</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">xml.etree</span> <span class="k">import</span> <span class="n">ElementTree</span>
+
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">import</span> <span class="nn">feedparser</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">six</span>  <span class="c1"># Queue</span>
+
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;0.0.2&#39;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Marat (@cmu.edu)&quot;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;GPL v3&quot;</span>
+
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s1">&#39;https://github.com&#39;</span>
+<span class="n">HEADERS</span> <span class="o">=</span> <span class="p">{</span>   <span class="c1"># browser headers for non-API URLs</span>
+    <span class="s1">&#39;X-Requested-With&#39;</span><span class="p">:</span> <span class="s1">&#39;XMLHttpRequest&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Accept-Encoding&#39;</span><span class="p">:</span> <span class="s2">&quot;gzip,deflate,br&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s2">&quot;*/*&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;Origin&#39;</span><span class="p">:</span> <span class="n">BASE_URL</span><span class="p">,</span>
+    <span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="s2">&quot;Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) &quot;</span>
+                  <span class="s2">&quot;Gecko/20100101 Firefox/60.0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Host&quot;</span><span class="p">:</span> <span class="s1">&#39;github.com&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;Referer&quot;</span><span class="p">:</span> <span class="n">BASE_URL</span><span class="p">,</span>
+    <span class="s2">&quot;DNT&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Accept-Language&quot;</span><span class="p">:</span> <span class="s1">&#39;en-US,en;q=0.5&#39;</span><span class="p">,</span>
+    <span class="s2">&quot;Connection&quot;</span><span class="p">:</span> <span class="s2">&quot;keep-alive&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Cache-Control&quot;</span><span class="p">:</span> <span class="s1">&#39;max-age=0&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">normalize_text</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="c1"># type: (str) -&gt; str</span>
+    <span class="sd">&quot;&quot;&quot; Normalize spaces and newlines</span>
+<span class="sd">    &gt;&gt;&gt; normalize_text(&quot;\\nHello   world  \\t\\n!&quot;)</span>
+<span class="sd">    &#39;Hello world!&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">extract_repo</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
+    <span class="c1"># type: (str) -&gt; str</span>
+    <span class="sd">&quot;&quot;&quot; Extract repository slug from a GitHub link</span>
+
+<span class="sd">    &gt;&gt;&gt; extract_repo(&quot;/org/repo/blabla?something=foo&quot;)</span>
+<span class="sd">    &#39;org/repo&#39;</span>
+<span class="sd">    &gt;&gt;&gt; extract_repo(&quot;org/repo&quot;)</span>
+<span class="sd">    &#39;org/repo&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)[:</span><span class="mi">2</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_timeline_update_record</span><span class="p">(</span><span class="n">record_div</span><span class="p">):</span>
+    <span class="c1"># type(BeautifulSoup) -&gt; dict</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Args:</span>
+<span class="sd">        record_div(BeautifulSoup): a BS4 HTML element object,</span>
+<span class="sd">            representing one chunk of GitHub user activity.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dict[str, Dict[str, int]]: {</span>
+<span class="sd">            repository1: {</span>
+<span class="sd">                &#39;commits&#39;: ...,</span>
+<span class="sd">                &#39;issues&#39;: ...,</span>
+<span class="sd">                &#39;pull_requests&#39;: ...,</span>
+<span class="sd">                &#39;reviews&#39;: ...,</span>
+<span class="sd">                &#39;created_repository&#39;: {0|1},</span>
+<span class="sd">            }</span>
+<span class="sd">        }</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Note: GitHub lists only first 25 repos for each activity</span>
+    <span class="c1"># data[repo][activity] = &lt;number&gt;</span>
+    <span class="n">record_data</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">))</span>
+
+    <span class="c1"># get record title:</span>
+    <span class="k">if</span> <span class="n">record_div</span><span class="o">.</span><span class="n">button</span><span class="p">:</span>
+        <span class="c1"># created commits, repositories, issues,</span>
+        <span class="c1"># reviewed pull requests</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">normalize_text</span><span class="p">(</span><span class="n">record_div</span><span class="o">.</span><span class="n">button</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
+                <span class="s1">&#39;Reviewed </span><span class="se">\\</span><span class="s1">d+ pull requests? in </span><span class="se">\\</span><span class="s1">d+ repositor(y|ies)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+
+            <span class="k">for</span> <span class="n">repo_div</span> <span class="ow">in</span> <span class="n">record_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span>
+                    <span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;profile-rollup-summarized&#39;</span><span class="p">):</span>
+                <span class="n">repo_span</span><span class="p">,</span> <span class="n">count_span</span> <span class="o">=</span> <span class="n">repo_div</span><span class="o">.</span><span class="n">button</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">)</span>
+                <span class="n">repo</span> <span class="o">=</span> <span class="n">repo_span</span><span class="o">.</span><span class="n">text</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">count_span</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">record_data</span><span class="p">[</span><span class="n">repo</span><span class="p">][</span><span class="s1">&#39;reviews&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">count</span>
+
+        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;Opened </span><span class="se">\\</span><span class="s1">d+ (?:other )?issues? in </span><span class="se">\\</span><span class="s1">d+ repositor(y|ies)&#39;</span><span class="p">,</span>
+                      <span class="n">title</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">repo_div</span> <span class="ow">in</span> <span class="n">record_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span>
+                    <span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;profile-rollup-summarized&#39;</span><span class="p">):</span>
+                <span class="n">repo</span> <span class="o">=</span> <span class="n">repo_div</span><span class="o">.</span><span class="n">button</span><span class="o">.</span><span class="n">div</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">text</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">count_span</span> <span class="o">=</span> <span class="n">repo_div</span><span class="o">.</span><span class="n">button</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span>
+                    <span class="s1">&#39;span&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">span</span> <span class="ow">in</span> <span class="n">count_span</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">):</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">span</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">record_data</span><span class="p">[</span><span class="n">repo</span><span class="p">][</span><span class="s1">&#39;issues&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">count</span>
+
+        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;Created </span><span class="se">\\</span><span class="s1">d+ repositor(y|ies)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">record_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span>
+                    <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;data-hovercard-type&#39;</span><span class="p">:</span> <span class="s2">&quot;repository&quot;</span><span class="p">}):</span>
+                <span class="n">record_data</span><span class="p">[</span><span class="n">link</span><span class="o">.</span><span class="n">text</span><span class="p">][</span><span class="s1">&#39;created_repository&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;Opened </span><span class="se">\\</span><span class="s1">d+ (?:other )?pull requests? &#39;</span>
+                      <span class="s1">&#39;in </span><span class="se">\\</span><span class="s1">d+ repositor(y|ies)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">repo_div</span> <span class="ow">in</span> <span class="n">record_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span>
+                    <span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;profile-rollup-summarized&#39;</span><span class="p">):</span>
+                <span class="n">repo</span> <span class="o">=</span> <span class="n">repo_div</span><span class="o">.</span><span class="n">button</span><span class="o">.</span><span class="n">div</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">text</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">count_span</span> <span class="o">=</span> <span class="n">repo_div</span><span class="o">.</span><span class="n">button</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span>
+                    <span class="mi">0</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">span</span> <span class="ow">in</span> <span class="n">count_span</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">):</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">span</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">record_data</span><span class="p">[</span><span class="n">repo</span><span class="p">][</span><span class="s1">&#39;pull_requests&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">count</span>
+
+        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s1">&#39;Created </span><span class="se">\\</span><span class="s1">d+ commits? in </span><span class="se">\\</span><span class="s1">d+ repositor(y|ies)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">repo_li</span> <span class="ow">in</span> <span class="n">record_div</span><span class="o">.</span><span class="n">ul</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                <span class="n">li_div</span> <span class="o">=</span> <span class="n">repo_li</span><span class="o">.</span><span class="n">div</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">li_div</span><span class="p">:</span>
+                    <span class="k">continue</span>  <span class="c1"># &quot;N repositories not shown&quot;</span>
+                <span class="n">repo_link</span> <span class="o">=</span> <span class="n">li_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">repo</span> <span class="o">=</span> <span class="n">extract_repo</span><span class="p">(</span><span class="n">repo_link</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">])</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">repo_link</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">record_data</span><span class="p">[</span><span class="n">repo</span><span class="p">][</span><span class="s1">&#39;commits&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">count</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unexpected title: </span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span>
+                             <span class="s2">&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">record_div</span><span class="p">)))</span>
+
+    <span class="k">elif</span> <span class="n">record_div</span><span class="o">.</span><span class="n">h4</span><span class="p">:</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">normalize_text</span><span class="p">(</span><span class="n">record_div</span><span class="o">.</span><span class="n">h4</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">repo</span> <span class="o">=</span> <span class="n">record_div</span><span class="o">.</span><span class="n">h4</span><span class="o">.</span><span class="n">a</span> <span class="ow">and</span> <span class="n">record_div</span><span class="o">.</span><span class="n">h4</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">text</span>
+        <span class="k">if</span> <span class="n">title</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Created an issue in&quot;</span><span class="p">):</span>
+            <span class="n">record_data</span><span class="p">[</span><span class="n">repo</span><span class="p">][</span><span class="s1">&#39;issues&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">title</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Joined the&quot;</span><span class="p">):</span>
+            <span class="n">record_data</span><span class="p">[</span><span class="n">record_div</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)][</span><span class="s1">&#39;joined_org&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">title</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Created a pull request in&quot;</span><span class="p">):</span>
+            <span class="c1"># fist PR in a given month</span>
+            <span class="n">record_data</span><span class="p">[</span><span class="n">repo</span><span class="p">][</span><span class="s1">&#39;pull_requests&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">title</span> <span class="o">==</span> <span class="s2">&quot;Joined GitHub&quot;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">title</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Opened their first issue on GitHub in&quot;</span><span class="p">):</span>
+            <span class="n">record_data</span><span class="p">[</span><span class="n">repo</span><span class="p">][</span><span class="s1">&#39;issues&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">title</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Opened their first pull request on GitHub in&quot;</span><span class="p">):</span>
+            <span class="n">record_data</span><span class="p">[</span><span class="n">repo</span><span class="p">][</span><span class="s1">&#39;pull_requests&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">title</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Created their first repository&quot;</span><span class="p">):</span>
+            <span class="n">link</span> <span class="o">=</span> <span class="n">record_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span>
+                <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;data-hovercard-type&#39;</span><span class="p">:</span> <span class="s2">&quot;repository&quot;</span><span class="p">})[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">repo</span> <span class="o">=</span> <span class="n">extract_repo</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">))</span>
+            <span class="n">record_data</span><span class="p">[</span><span class="n">repo</span><span class="p">][</span><span class="s1">&#39;created_repository&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unexpected title: &quot;</span> <span class="o">+</span> <span class="n">title</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">record_div</span><span class="o">.</span><span class="n">span</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="c1"># private activity</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">normalize_text</span><span class="p">(</span><span class="n">record_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">title</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39; in private repositories&#39;</span><span class="p">):</span>
+            <span class="n">record_data</span><span class="p">[</span><span class="kc">None</span><span class="p">][</span><span class="s1">&#39;private_contrib&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">title</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unexpected title: &quot;</span> <span class="o">+</span> <span class="n">title</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unexpected activity:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">record_div</span><span class="p">))</span>
+
+    <span class="c1"># convert defaultdict to dict</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">rep</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activities</span><span class="p">)</span> <span class="k">for</span> <span class="n">rep</span><span class="p">,</span> <span class="n">activities</span> <span class="ow">in</span> <span class="n">record_data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_timeline_update</span><span class="p">(</span><span class="n">bs4_tree</span><span class="p">):</span>
+    <span class="c1"># type(BeautifulSoup) -&gt; tuple</span>
+    <span class="sd">&quot;&quot;&quot; Parse a chunk of activity acquired via Ajax, usually one month.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        Tuple[str, Dict[str, int]]:</span>
+<span class="sd">            (month, {output of _parse_timeline_update_record()})</span>
+
+<span class="sd">    &lt;div class=&quot;contribution-activity-listing&quot;&gt;  # month div</span>
+<span class="sd">        &lt;div class=&quot;profile-timeline discussion-timeline&quot;&gt;  # one extra wrapper</span>
+<span class="sd">            &lt;h3&gt;  # month title</span>
+<span class="sd">            &lt;div class=&quot;profile-rollup-wrapper&quot;&gt;  # record divs</span>
+<span class="sd">            ...</span>
+
+<span class="sd">    Terminology:</span>
+<span class="sd">        timeline consists of updates</span>
+<span class="sd">        updates contain one or more months. Only one month is non-empty</span>
+<span class="sd">        month cosists of records - a single chunk of reported activity</span>
+<span class="sd">        record might contain information about several repositories,</span>
+<span class="sd">            e.g. Created N commits in M repositories</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># sometimes next chunk includes several months.</span>
+    <span class="c1"># In these cases, all except one are empty;</span>
+    <span class="c1"># often empty &quot;months&quot; represent ranges, e.g. April 2018 - December 2018</span>
+    <span class="c1"># to handle such cases, month is lazily evaluated</span>
+    <span class="k">for</span> <span class="n">month_div</span> <span class="ow">in</span> <span class="n">bs4_tree</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;profile-timeline&quot;</span><span class="p">):</span>
+        <span class="n">record_month</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">month_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">record_div</span> <span class="ow">in</span> <span class="n">month_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;profile-rollup-wrapper&quot;</span><span class="p">):</span>
+            <span class="n">parsed_record</span> <span class="o">=</span> <span class="n">_parse_timeline_update_record</span><span class="p">(</span><span class="n">record_div</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed_record</span><span class="p">:</span>  <span class="c1"># ignore empty months</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">record_repo</span><span class="p">,</span> <span class="n">record_activity</span> <span class="ow">in</span> <span class="n">parsed_record</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">record_repo</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">month_data</span><span class="p">:</span>
+                    <span class="n">month_data</span><span class="p">[</span><span class="n">record_repo</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="c1"># we might have several activities in the same record repository</span>
+                <span class="c1"># in a given month, e.g. issues, PRs and commits</span>
+                <span class="n">month_data</span><span class="p">[</span><span class="n">record_repo</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record_activity</span><span class="p">)</span>
+            <span class="n">record_month</span> <span class="o">=</span> <span class="n">record_month</span> <span class="ow">or</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+                <span class="n">month_div</span><span class="o">.</span><span class="n">h3</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">month_data</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">record_month</span><span class="p">,</span> <span class="n">month_data</span>
+
+
+<span class="k">def</span> <span class="nf">_extract_activity_feed_links</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+
+    <span class="n">date</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">span</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;f6&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">span</span><span class="p">[</span><span class="s1">&#39;class&#39;</span><span class="p">]:</span>
+            <span class="k">continue</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">span</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">break</span>
+
+    <span class="n">links</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">):</span>
+        <span class="n">href</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="n">chunks</span> <span class="o">=</span> <span class="n">href</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="c1"># hrefs start with &quot;/&quot; so chunks[0] is an empty string</span>
+        <span class="c1"># this is why &#39;commit/issue/tree&#39; is chunks[3], not [2]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunks</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">5</span> <span class="ow">or</span> \
+                <span class="n">chunks</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;commit&#39;</span><span class="p">,</span> <span class="s1">&#39;issue&#39;</span><span class="p">,</span> <span class="s1">&#39;tree&#39;</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">href</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+            <span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">href</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">href</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">guard</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="c1"># TODO: once released in stutils, reuse from there</span>
+    <span class="n">semaphore</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">semaphore</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">semaphore</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+
+<div class="viewcode-block" id="Scraper"><a class="viewcode-back" href="../index.html#stgithub.Scraper">[docs]</a><span class="k">class</span> <span class="nc">Scraper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A class to access &quot;unofficial GitHub API&quot;</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        This &quot;unofficial API&quot; is rate limited, just as the official one.</span>
+<span class="sd">        The rate limit is 40 requests in 80 seconds, and some calls take</span>
+<span class="sd">        multiple requests. So, for example, parsing a user activity timeline</span>
+<span class="sd">        typically takes couple minutes.</span>
+<span class="sd">        Use this &quot;API&quot; with caution as it might be extremely slow.</span>
+
+<span class="sd">    This class provides access to several functions available</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_instance</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># singleton instance</span>
+    <span class="n">cookies</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># cookies for non-API URLs</span>
+    <span class="c1"># limit is imposed if over 40 requests are made in 80 seconds</span>
+    <span class="c1"># thus, keeping track of issued requests</span>
+    <span class="n">queue</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># after many experiments, 40/121 looks to be the fastest option</span>
+    <span class="n">queue_max_size</span> <span class="o">=</span> <span class="mi">40</span>
+    <span class="n">queue_time_length</span> <span class="o">=</span> <span class="mi">121</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># Singleton</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Scraper</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cookies</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">BASE_URL</span><span class="p">)</span><span class="o">.</span><span class="n">cookies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">queue_max_size</span><span class="p">)</span>
+
+    <span class="nd">@guard</span>
+    <span class="k">def</span> <span class="nf">_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="ow">or</span> <span class="n">HEADERS</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">BASE_URL</span><span class="p">):</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">BASE_URL</span> <span class="o">+</span> <span class="n">url</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">full</span><span class="p">():</span>
+                <span class="n">sleep_interval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">-</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue_time_length</span>
+                <span class="k">if</span> <span class="n">sleep_interval</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Hibernating for </span><span class="si">%.2f</span><span class="s2"> seconds to maintain &quot;</span>
+                                 <span class="s2">&quot;GitHub XHR rate limit..&quot;</span><span class="p">,</span> <span class="n">sleep_interval</span><span class="p">)</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_interval</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="n">url</span><span class="p">,</span> <span class="n">cookies</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cookies</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">429</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Hit GitHub XHR rate limit, retry in 10 seconds..&quot;</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="k">break</span>
+
+        <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">r</span>
+
+<div class="viewcode-block" id="Scraper.project_contributor_stats"><a class="viewcode-back" href="../index.html#stgithub.Scraper.project_contributor_stats">[docs]</a>    <span class="k">def</span> <span class="nf">project_contributor_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_slug</span><span class="p">):</span>
+        <span class="c1"># type: (str) -&gt; list</span>
+        <span class="sd">&quot;&quot;&quot;Get top 100 contributors weekly commit stats over the project history</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            repo_slug (str): &lt;owner_login&gt;/&lt;repo_name&gt;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: A list of top 100 contributors in the repo, with their logins,</span>
+<span class="sd">                total number of commits and weekly contribution counts as number</span>
+<span class="sd">                of lines added, changed or deleted. Note that weeks are</span>
+<span class="sd">                started on Sunday and represented by a Unix timestamp.</span>
+
+<span class="sd">        &gt;&gt;&gt; Scraper().project_contributor_stats(&#39;pandas-dev/pandas&#39;)</span>
+<span class="sd">        [{u&#39;author&#39;: {u&#39;avatar&#39;: u&#39;https://avatars0.githubusercontent.com/u/1435085?s=60&amp;v=4&#39;,</span>
+<span class="sd">           u&#39;hovercard_url&#39;: u&#39;/hovercards?user_id=1435085&#39;,</span>
+<span class="sd">           u&#39;id&#39;: 1435085,</span>
+<span class="sd">           u&#39;login&#39;: u&#39;blbradley&#39;,</span>
+<span class="sd">           u&#39;path&#39;: u&#39;/blbradley&#39;},</span>
+<span class="sd">          u&#39;total&#39;: 8,</span>
+<span class="sd">          u&#39;weeks&#39;: [{u&#39;a&#39;: 0, u&#39;c&#39;: 0, u&#39;d&#39;: 0, u&#39;w&#39;: 1249171200},</span>
+<span class="sd">           {u&#39;a&#39;: 0, u&#39;c&#39;: 0, u&#39;d&#39;: 0, u&#39;w&#39;: 1249776000},</span>
+<span class="sd">           {u&#39;a&#39;: 0, u&#39;c&#39;: 0, u&#39;d&#39;: 0, u&#39;w&#39;: 1250380800},</span>
+<span class="sd">        ...</span>
+<span class="sd">        }]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s2">&quot;/</span><span class="si">%s</span><span class="s2">/graphs/contributors-data&quot;</span> <span class="o">%</span> <span class="n">repo_slug</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Scraper.user_daily_contrib_num"><a class="viewcode-back" href="../index.html#stgithub.Scraper.user_daily_contrib_num">[docs]</a>    <span class="k">def</span> <span class="nf">user_daily_contrib_num</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+        <span class="c1"># type: (str, int) -&gt; dict</span>
+        <span class="sd">&quot;&quot;&quot; Get number of daily contributions of a GitHub user in a given year.</span>
+<span class="sd">        This method represents the white and green grid in the profile page.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user (str): The GitHub login of the user to get stats for.</span>
+<span class="sd">            year (int): Year of contributions to get</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: A dictionary with keys being %Y-%m-%d formatted dates, and</span>
+<span class="sd">                values being the number of contributions. This method does not</span>
+<span class="sd">                differentiate types of contributions, i.e. it is a sum</span>
+<span class="sd">                of commits, issues, submitted and reviewed pull requests, etc.</span>
+
+<span class="sd">        &gt;&gt;&gt; Scraper().user_daily_contrib_num(&#39;user2589&#39;, 2018)</span>
+<span class="sd">        {&#39;2018-01-01&#39;: 0,</span>
+<span class="sd">         &#39;2018-01-02&#39;: 15,</span>
+<span class="sd">         ...</span>
+<span class="sd">         &#39;2018-12-31&#39;: 0}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;/users/</span><span class="si">%s</span><span class="s2">/contributions?from=</span><span class="si">%d</span><span class="s2">-12-01&amp;to=</span><span class="si">%d</span><span class="s2">-12-31&amp;full_graph=1&quot;</span> \
+              <span class="o">%</span> <span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="n">rect</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;data-date&#39;</span><span class="p">]:</span> <span class="nb">int</span><span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data-count&#39;</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">rect</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s1">&#39;rect&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">rect</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;class&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;day&#39;</span>
+                <span class="ow">and</span> <span class="n">rect</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data-date&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">year</span><span class="p">)}</span></div>
+
+<div class="viewcode-block" id="Scraper.links_to_recent_user_activity"><a class="viewcode-back" href="../index.html#stgithub.Scraper.links_to_recent_user_activity">[docs]</a>    <span class="k">def</span> <span class="nf">links_to_recent_user_activity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get user events as a 2-tuple generator: (date, link).</span>
+
+<span class="sd">        Events include: commits, issues and refs creation (tags/branches).</span>
+<span class="sd">        Internally, this method is using Atom feed.</span>
+<span class="sd">        The result includes up to couple month of activity;</span>
+<span class="sd">        sometimes it also misses up to one month of recent events.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This method is know to return incomplete data.</span>
+<span class="sd">            Proceed with caution.</span>
+
+
+<span class="sd">        Args:</span>
+<span class="sd">            user (str): The GitHub login of the user.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Generator: A generator of two-tuples:</span>
+<span class="sd">                (&lt;%Y-%m-%d date&gt;, link to the activity)</span>
+<span class="sd">                It seems like this feed only includes tags and commits</span>
+
+<span class="sd">        &gt;&gt;&gt; list(Scraper().links_to_recent_user_activity(&#39;user2589&#39;))  # doctest: +SKIP</span>
+<span class="sd">        [(&#39;2018-12-01&#39;, &#39;/user2589/Q/tree/master&#39;),</span>
+<span class="sd">         (&#39;2018-12-01&#39;,</span>
+<span class="sd">          &#39;/user2589/Q/commit/9184f20f939a70e3930ef762cc83906220433fc8&#39;),</span>
+<span class="sd">         (&#39;2018-11-20&#39;, &#39;/user2589/TAC_Github/tree/master&#39;),</span>
+<span class="sd">         ...]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;This method is know to return incomplete data.&quot;</span>
+            <span class="s2">&quot;Proceed with caution.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+
+        <span class="n">page</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">user</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;page&#39;</span><span class="p">:</span> <span class="n">page</span><span class="p">},</span>
+                                    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/atom+xml&#39;</span><span class="p">})</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">page</span> <span class="o">+</span> <span class="mi">1</span>
+
+            <span class="n">activity_log</span> <span class="o">=</span> <span class="n">feedparser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">entries</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">activity_log</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">activity_log</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">record</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]:</span>
+                    <span class="k">for</span> <span class="n">date</span><span class="p">,</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">_extract_activity_feed_links</span><span class="p">(</span>
+                            <span class="n">chunk</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">)):</span>
+                        <span class="k">yield</span> <span class="n">date</span><span class="p">,</span> <span class="n">link</span></div>
+
+<div class="viewcode-block" id="Scraper.full_user_activity_timeline"><a class="viewcode-back" href="../index.html#stgithub.Scraper.full_user_activity_timeline">[docs]</a>    <span class="k">def</span> <span class="nf">full_user_activity_timeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># type: (str, str, str) -&gt; Generator[Tuple[str, Dict]]</span>
+        <span class="sd">&quot;&quot;&quot; Get a list of public user contributions, by month by repository.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            user (str): GitHub login of the user to get activity for.</span>
+<span class="sd">            start (str): date to start with, e.g. &#39;2017-01&#39; or &#39;2017-01-01&#39;.</span>
+<span class="sd">                `datetime` objects should also work.</span>
+<span class="sd">            to (str): upper bound of date ranges to parse, same as `start`.</span>
+<span class="sd">                **Note**: the day is 1 by default, i.e. &#39;2017-01&#39;</span>
+<span class="sd">                will be interpreted as **1st** of January 2017.</span>
+<span class="sd">        Yields:</span>
+<span class="sd">            Dict[str, int]:</span>
+<span class="sd">                A generator of activity dictionaries.</span>
+<span class="sd">                Each dict has fields `month`, a `%Y-%m` formatted month, and</span>
+<span class="sd">                `repo`, a repository slug. Other fields indicate number of</span>
+<span class="sd">                contributions of a given type:</span>
+
+<span class="sd">                - `commits`: number of commits.</span>
+<span class="sd">                - `issues`: number of reported issues.</span>
+<span class="sd">                - `reviews`: number of reviewed pull requests.</span>
+<span class="sd">                    GitHub counts any commented pull request as reviewed,</span>
+<span class="sd">                    also ignoring any code comments.</span>
+<span class="sd">                - `pull_requests`: number of pull requsts submitted.</span>
+<span class="sd">                - `created_repository`: can be only 1.</span>
+<span class="sd">                - `joined_org`: can be only 1.</span>
+<span class="sd">                    The repository slug in this case is the GitHub org name.</span>
+<span class="sd">                - `private`: all contributions in private repositories combined,</span>
+<span class="sd">                    if user enabled anonymous reporting of private activities.</span>
+<span class="sd">                    The repository slug in this case is an empty string.</span>
+
+<span class="sd">        The output of this method is suitable for a pd.DataFrame constructor:</span>
+
+<span class="sd">        &gt;&gt;&gt; pd.DataFrame(</span>
+<span class="sd">        ...     Scraper().full_user_activity_timeline(&#39;user2589&#39;))</span>
+<span class="sd">             commits   ...     reviews</span>
+<span class="sd">        ...</span>
+<span class="sd">        111      NaN   ...         NaN</span>
+<span class="sd">        112      NaN   ...         NaN</span>
+<span class="sd">        113      1.0   ...         NaN</span>
+<span class="sd">        &lt;BLANKLINE&gt;</span>
+<span class="sd">        [114 rows x 9 columns]</span>
+
+<span class="sd">        It is even better to index on month+repo and replace NaNs:</span>
+
+<span class="sd">        &gt;&gt;&gt; pd.DataFrame(</span>
+<span class="sd">        ...     Scraper().full_user_activity_timeline(&#39;user2589&#39;)</span>
+<span class="sd">        ... ).set_index([&#39;month&#39;, &#39;repo&#39;]).fillna(0).astype(int)</span>
+<span class="sd">                                                 commits   ...     reviews</span>
+<span class="sd">        month   repo                                       ...</span>
+<span class="sd">        ...</span>
+<span class="sd">        2012-05 user2589/minicms                      11   ...           0</span>
+<span class="sd">        2011-09 alsoicode/django-admin-sortable        0   ...           0</span>
+<span class="sd">        2011-08 user2589/django-rosetta                0   ...           0</span>
+<span class="sd">                mbi/django-rosetta                     0   ...           0</span>
+<span class="sd">        2005-03 user2589/schooligan                    1   ...           0</span>
+<span class="sd">        &lt;BLANKLINE&gt;</span>
+<span class="sd">        [114 rows x 7 columns]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">start</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">start</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">to</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">to</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>  <span class="c1"># str or unicode</span>
+                <span class="n">to</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">to</span><span class="p">)</span>
+            <span class="n">now</span> <span class="o">=</span> <span class="n">to</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">?tab=overview&amp;include_header=no&amp;utf8=✓&amp;from=</span><span class="si">%s</span><span class="s1">&amp;to=</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">user</span><span class="p">,</span> <span class="n">now</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;01&#39;</span><span class="p">,</span> <span class="n">now</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">month_div</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;contribution-activity-listing&#39;</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">month</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">_parse_timeline_update</span><span class="p">(</span><span class="n">month_div</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">start</span> <span class="ow">and</span> <span class="n">month</span> <span class="o">&lt;</span> <span class="n">start</span><span class="p">:</span>
+                        <span class="k">return</span>
+                    <span class="k">for</span> <span class="n">repo</span><span class="p">,</span> <span class="n">activity</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="n">activity</span><span class="p">[</span><span class="s1">&#39;repo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">repo</span>
+                        <span class="n">activity</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">month</span>
+                        <span class="k">yield</span> <span class="n">activity</span>
+            <span class="n">form</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">form</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">form</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;data-url&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">form</span><span class="o">.</span><span class="n">button</span><span class="p">:</span>
+                <span class="k">break</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Get a user contribution timeline&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;GitHub login of the user to parse&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--from&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Lower end of the date range, default: no limit&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--to&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Upper end of the date range, default: now&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="s1">&#39;--output&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">),</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Output filename, &quot;-&quot; or skip for stdin&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-v&#39;</span><span class="p">,</span> <span class="s1">&#39;--verbose&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Log progress to stderr&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+                        <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span> <span class="k">else</span> <span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+
+    <span class="n">COLUMNS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;commits&#39;</span><span class="p">,</span> <span class="s1">&#39;issues&#39;</span><span class="p">,</span> <span class="s1">&#39;pull_requests&#39;</span><span class="p">,</span> <span class="s1">&#39;reviews&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;private_contrib&#39;</span><span class="p">,</span> <span class="s1">&#39;created_repository&#39;</span><span class="p">,</span> <span class="s1">&#39;joined_org&#39;</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Scraper</span><span class="p">()</span><span class="o">.</span><span class="n">full_user_activity_timeline</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">user</span><span class="p">))</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="s1">&#39;repo&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">strudel.ghutils</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Marat (@cmu.edu).
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
