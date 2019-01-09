@@ -44,7 +44,9 @@ class TestGitHub(unittest.TestCase):
     def test_parse_record(self):
         fixtures_dir = os.path.join(self.fixtures_dir, 'record')
         test_filename = os.path.join(fixtures_dir, 'record_test.csv')
-        for fname, result_json in csv.reader(open(test_filename)):
+
+        fh = open(test_filename)
+        for fname, result_json in csv.reader(fh):
             expected_result = json.loads(result_json)
             if 'null' in expected_result:
                 # fix json serialization of None
@@ -56,6 +58,7 @@ class TestGitHub(unittest.TestCase):
             tree = BeautifulSoup(input_text, 'html.parser')
             self.assertDictEqual(
                 expected_result, stgithub._parse_timeline_update_record(tree))
+        fh.close()
 
     def test_parse_month(self):
         fixtures_dir = os.path.join(self.fixtures_dir, 'month')
