@@ -35,10 +35,8 @@ import datetime
 from functools import wraps
 import logging
 import re
-import six  # Queue
 import threading
 import time
-from typing import *
 import warnings
 from xml.etree import ElementTree
 
@@ -46,6 +44,7 @@ from bs4 import BeautifulSoup
 import feedparser
 import pandas as pd
 import requests
+import six  # Queue
 
 __version__ = '0.0.2'
 __author__ = "Marat (@cmu.edu)"
@@ -68,13 +67,13 @@ HEADERS = {   # browser headers for non-API URLs
 }
 
 
-def normalize_text(s):
+def normalize_text(string):
     # type: (str) -> str
     """ Normalize spaces and newlines
     >>> normalize_text("\\nHello   world  \\t\\n!")
     'Hello world!'
     """
-    return " ".join(s.split())
+    return " ".join(string.split())
 
 
 def extract_repo(link):
@@ -95,6 +94,7 @@ def _parse_timeline_update_record(record_div):
     Args:
         record_div(BeautifulSoup): a BS4 HTML element object,
             representing one chunk of GitHub user activity.
+
     Returns:
         Dict[str, Dict[str, int]]: {
             repository1: {
@@ -210,9 +210,9 @@ def _parse_timeline_update(bs4_tree):
     # type(BeautifulSoup) -> tuple
     """ Parse a chunk of activity acquired via Ajax, usually one month.
 
-    Returns:
-        Generator[Tuple[str, Dict[str, int]]]:
-            (month, {output of parse_record()})
+    Yields:
+        Tuple[str, Dict[str, int]]:
+            (month, {output of _parse_timeline_update_record()})
 
     <div class="contribution-activity-listing">  # month div
         <div class="profile-timeline discussion-timeline">  # one extra wrapper
@@ -325,7 +325,7 @@ class Scraper(object):
         return r
 
     def project_contributor_stats(self, repo_slug):
-        # type: (str) -> dict
+        # type: (str) -> list
         """Get top 100 contributors weekly commit stats over the project history
 
         Args:
@@ -443,11 +443,11 @@ class Scraper(object):
 
         page = None
         while True:
-            r = self._request('/%s' % user, params={'page': page},
-                              headers={'Accept': 'application/atom+xml'})
+            request = self._request('/%s' % user, params={'page': page},
+                                    headers={'Accept': 'application/atom+xml'})
             page = 1 if page is None else page + 1
 
-            activity_log = feedparser.parse(r.text).entries
+            activity_log = feedparser.parse(request.text).entries
             if not activity_log:
                 return
 
@@ -457,7 +457,7 @@ class Scraper(object):
                         yield ts.strftime("%Y-%m-%d"), link
 
     def full_user_activity_timeline(self, user, start=None, to=None):
-        # type: (str, Optional[str], Optional[str]) -> Generator[Tuple[str, Dict]]
+        # type: (str, str, str) -> Generator[Tuple[str, Dict]]
         """ Get a list of public user contributions, by month by repository.
 
         Args:
@@ -467,8 +467,8 @@ class Scraper(object):
             to (str): upper bound of date ranges to parse, same as `start`.
                 **Note**: the day is 1 by default, i.e. '2017-01'
                 will be interpreted as **1st** of January 2017.
-        Returns:
-            Generator[Dict[str, int]]:
+        Yields:
+            Dict[str, int]:
                 A generator of activity dictionaries.
                 Each dict has fields `month`, a `%Y-%m` formatted month, and
                 `repo`, a repository slug. Other fields indicate number of
@@ -569,6 +569,6 @@ if __name__ == '__main__':
     COLUMNS = ('commits', 'issues', 'pull_requests', 'reviews',
                'private_contrib', 'created_repository', 'joined_org')
 
-    df = pd.DataFrame(Scraper().full_user_activity_timeline(args.user)
-                      ).set_index(['month', 'repo']).fillna(0).astype(int)
+    df = pd.DataFrame(Scraper().full_user_activity_timeline(args.user))
+    df = df.set_index(['month', 'repo']).fillna(0).astype(int)
     df.to_csv(args.output)
