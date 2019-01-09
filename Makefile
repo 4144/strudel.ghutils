@@ -9,15 +9,15 @@ test:
 build:
 	$(MAKE) clean
 	$(MAKE) test
+	python setup.py sdist bdist_wheel
 
 .PHONY: publish
 publish:
 	test $$(git config user.name) || git config user.name "semantic-release (via TravisCI)"
 	test $$(git config user.email) || git config user.email "semantic-release@travis"
-	pip install python-semantic-release
 	test $$TRAVIS_TAG && semantic-release publish
 	# old way: create ~/.pypirc, then
-	# python setup.py sdist bdist_wheel
+	# $(MAKE) build
 	# twine upload dist/*  # handled by semantic-release in this package
 
 .PHONY: clean
@@ -31,7 +31,12 @@ clean:
 html:
 	sphinx-build -M html "docs" "docs/build"
 
+.PHONY: install
+install:
+	pip install -r requirements.txt
+
 .PHONY: install_dev
 install_dev:
-	pip install -r requirements.txt
+	$(MAKE) install
 	pip install sphinx sphinx-autobuild
+	pip install python-semantic-release

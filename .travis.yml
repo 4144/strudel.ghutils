@@ -8,7 +8,7 @@ cache:
   - pip
 
 install:
-  - make install_dev
+  - pip install -r requirements.txt
 
 script:
   - make test
@@ -19,7 +19,10 @@ jobs:
   include:
   - stage: upload to PYPI, build docs and create a release
     python: 3.5
-    install: skip
+    install:
+      - pip install -r requirements.txt
+      - pip install sphinx sphinx-autobuild
+      - pip install python-semantic-release
     script: make html
     deploy:
       - provider: pages
