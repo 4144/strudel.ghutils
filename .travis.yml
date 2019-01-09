@@ -13,29 +13,24 @@ install:
 script:
   - make test
 
-jobs:
-  include:
-    - stage: publish to PyPI
-      if: env(TRAVIS_TAG)
-      python: 3.5
-      deploy:
-        - provider: script
-          skip_cleanup: true
-          on:
-            branch: master
-          script: make publish
+deploy:
+  - provider: pages
+    skip-cleanup: true
+    github-token: $GH_TOKEN
+    keep-history: true
+    on:
+      branch: master
+    local-dir: docs/build/html
 
-        - provider: pages
-          skip-cleanup: true
-          github-token: $GH_TOKEN
-          keep-history: true
-          on:
-            branch: master
-          local-dir: docs/build/html
+  - provider: script
+    skip_cleanup: true
+    on:
+      branch: master
+    script: make publish
 
-        - provider: releases
-          skip-cleanup: true
-          api_key: $GH_TOKEN
-          on:
-            tags: true
-          file: dist/*
+  - provider: releases
+    skip-cleanup: true
+    api_key: $GH_TOKEN
+    on:
+      tags: true
+    file: dist/*
