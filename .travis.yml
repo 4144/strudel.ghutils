@@ -20,7 +20,9 @@ jobs:
   - stage: upload to PYPI, build docs and create a release
     python: 3.5
     install:
-      - pip install sphinx sphinx-autobuild python-semantic-release
+      - pip install -r requirements.txt
+      - pip install sphinx sphinx-autobuild
+      - pip install python-semantic-release
     script: make html
 
     deploy:
