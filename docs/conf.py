@@ -12,6 +12,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
+import datetime
 import os
 import sys
 
@@ -20,17 +21,17 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-import stgithub
+import stgithub as package
 
 py_namespace = 'stgithub'
 project = u'strudel.ghutils'
-copyright = u'2018, Marat (@cmu.edu)'
-author = stgithub.__author__
+author = package.__author__
+copyright = datetime.datetime.now().strftime("%Y, " + author)
 
 # The short X.Y version
-version = ".".join(stgithub.__version__.split(".", 3)[:2])
+version = ".".join(package.__version__.split(".", 3)[:2])
 # The full version, including alpha/beta/rc tags
-release = stgithub.__version__
+release = package.__version__
 
 
 # -- General configuration ---------------------------------------------------

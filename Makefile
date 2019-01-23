@@ -39,4 +39,4 @@ install:
 install_dev:
 	$(MAKE) install
 	pip install sphinx sphinx-autobuild
-	pip install python-semantic-release
+	pip install python-semantic-release==3.11.2
