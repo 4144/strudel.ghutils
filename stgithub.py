@@ -46,7 +46,7 @@ import pandas as pd
 import requests
 import six  # Queue
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __author__ = "Marat (@cmu.edu)"
 __license__ = "GPL v3"
 
