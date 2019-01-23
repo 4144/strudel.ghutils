@@ -74,7 +74,6 @@ multiple requests. So, for example, parsing a user activity timeline
 typically takes couple minutes.
 Use this “API” with caution as it might be extremely slow.</p>
 </div>
-<p>This class provides access to several functions available</p>
 <dl class="method">
 <dt id="stgithub.Scraper.full_user_activity_timeline">
 <code class="descname">full_user_activity_timeline</code><span class="sig-paren">(</span><em>user</em>, <em>start=None</em>, <em>to=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/stgithub.html#Scraper.full_user_activity_timeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stgithub.Scraper.full_user_activity_timeline" title="Permalink to this definition">¶</a></dt>
@@ -171,16 +170,16 @@ Proceed with caution.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user</strong> (<em>str</em>) – The GitHub login of the user.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
-<dt>A generator of two-tuples:</dt>
-<dd>(&lt;%Y-%m-%d date&gt;, link to the activity)
-It seems like this feed only includes tags and commits</dd>
-</dl>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>user</strong> (<em>str</em>) – The GitHub login of the user.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Generator</td>
+<tr class="field-even field"><th class="field-name">Yields:</th><td class="field-body"><p class="first"><em>Tuple[str, str]</em> –</p>
+<dl class="last docutils">
+<dt>(&lt;%Y-%m-%d date&gt;, link to the activity)</dt>
+<dd><p class="first last">It seems like this feed only includes tags and commits</p>
+</dd>
+</dl>
+</td>
 </tr>
 </tbody>
 </table>
@@ -325,7 +324,7 @@ of commits, issues, submitted and reviewed pull requests, etc.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2018, Marat (@cmu.edu).
+      &copy;2019, Marat (@cmu.edu).
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
