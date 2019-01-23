@@ -116,7 +116,7 @@ def _parse_timeline_update_record(record_div):
         # reviewed pull requests
         title = normalize_text(record_div.button.text)
         if re.match(
-                'Reviewed \\d+ pull requests? in \\d+ repositor(y|ies)', title):
+                r'Reviewed \d+ pull requests? in \d+ repositor(y|ies)', title):
 
             for repo_div in record_div.find_all(
                     'div', class_='profile-rollup-summarized'):
@@ -125,7 +125,7 @@ def _parse_timeline_update_record(record_div):
                 count = int(count_span.text.split()[0])
                 record_data[repo]['reviews'] += count
 
-        elif re.match('Opened \\d+ (?:other )?issues? in \\d+ repositor(y|ies)',
+        elif re.match(r'Opened \d+ (?:other )?issues? in \d+ repositor(y|ies)',
                       title):
             for repo_div in record_div.find_all(
                     'div', class_='profile-rollup-summarized'):
@@ -137,13 +137,13 @@ def _parse_timeline_update_record(record_div):
                     count += int(span.text)
                 record_data[repo]['issues'] += count
 
-        elif re.match('Created \\d+ repositor(y|ies)', title):
+        elif re.match(r'Created \d+ (?:other )?repositor(y|ies)', title):
             for link in record_div.find_all(
                     'a', attrs={'data-hovercard-type': "repository"}):
                 record_data[link.text]['created_repository'] = 1
 
-        elif re.match('Opened \\d+ (?:other )?pull requests? '
-                      'in \\d+ repositor(y|ies)', title):
+        elif re.match(r'Opened \d+ (?:other )?pull requests? '
+                      r'in \d+ repositor(y|ies)', title):
             for repo_div in record_div.find_all(
                     'div', class_='profile-rollup-summarized'):
                 repo = repo_div.button.div.span.text
@@ -154,7 +154,7 @@ def _parse_timeline_update_record(record_div):
                     count += int(span.text)
                 record_data[repo]['pull_requests'] += count
 
-        elif re.match('Created \\d+ commits? in \\d+ repositor(y|ies)', title):
+        elif re.match(r'Created \d+ commits? in \d+ repositor(y|ies)', title):
             for repo_li in record_div.ul.find_all('li', recursive=False):
                 li_div = repo_li.div
                 if not li_div:
@@ -302,7 +302,6 @@ class Scraper(object):
         typically takes couple minutes.
         Use this "API" with caution as it might be extremely slow.
 
-    This class provides access to several functions available
 
     """
     _instance = None  # singleton instance
@@ -426,9 +425,8 @@ class Scraper(object):
         Args:
             user (str): The GitHub login of the user.
 
-        Returns:
-            Generator: A generator of two-tuples:
-                (<%Y-%m-%d date>, link to the activity)
+        Yields:
+            Tuple[str, str]: (<%Y-%m-%d date>, link to the activity)
                 It seems like this feed only includes tags and commits
 
         >>> list(Scraper().links_to_recent_user_activity('user2589'))  # doctest: +SKIP
