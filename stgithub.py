@@ -185,9 +185,12 @@ def _parse_timeline_update_record(record_div):
         elif title.startswith("Opened their first pull request on GitHub in"):
             record_data[repo]['pull_requests'] += 1
         elif title.startswith("Created their first repository"):
-            link = record_div.find_all(
-                'a', attrs={'data-hovercard-type': "repository"})[0]
-            repo = extract_repo(link.get('href'))
+            links = record_div.find_all(
+                'a', attrs={'data-hovercard-type': "repository"})
+            if not links:  # private repository
+                repo = ''
+            else:
+                repo = extract_repo(links[0].get('href'))
             record_data[repo]['created_repository'] = 1
         else:
             raise ValueError("Unexpected title: " + title)
