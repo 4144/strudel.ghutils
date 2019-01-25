@@ -354,7 +354,9 @@ class Scraper(object):
                     r = requests.get(url, cookies=self.cookies,
                                      headers=headers, params=params)
                 except requests.exceptions.RequestException:
+                    time.sleep(1)
                     continue
+
                 if r.status_code < 500:
                     break
                 else:
@@ -400,7 +402,17 @@ class Scraper(object):
         ...
         }]
         """
-        return self._request("/%s/graphs/contributors-data" % repo_slug).json()
+        for i in range(self.retries_on_timeout):
+            try:
+                res = self._request(
+                    "/%s/graphs/contributors-data" % repo_slug).json()
+            except ValueError:
+                # sometimes GitHub just returns empty page
+                # without throwing a timeout
+                time.sleep(1)
+                continue
+            else:
+                return res
 
     def user_daily_contrib_num(self, user, year):
         # type: (str, int) -> dict
