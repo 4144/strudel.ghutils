@@ -102,8 +102,12 @@
 <span class="p">}</span>
 
 
+<span class="k">class</span> <span class="nc">GitHubScrapingError</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
 <span class="k">def</span> <span class="nf">normalize_text</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
-    <span class="c1"># type: (str) -&gt; str</span>
+    <span class="c1"># type: (six.string_types) -&gt; six.string_types</span>
     <span class="sd">&quot;&quot;&quot; Normalize spaces and newlines</span>
 <span class="sd">    &gt;&gt;&gt; normalize_text(&quot;\\nHello   world  \\t\\n!&quot;)</span>
 <span class="sd">    &#39;Hello world!&#39;</span>
@@ -112,7 +116,7 @@
 
 
 <span class="k">def</span> <span class="nf">extract_repo</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
-    <span class="c1"># type: (str) -&gt; str</span>
+    <span class="c1"># type: (six.string_types) -&gt; six.string_types</span>
     <span class="sd">&quot;&quot;&quot; Extract repository slug from a GitHub link</span>
 
 <span class="sd">    &gt;&gt;&gt; extract_repo(&quot;/org/repo/blabla?something=foo&quot;)</span>
@@ -350,6 +354,7 @@
     <span class="c1"># after many experiments, 40/121 looks to be the fastest option</span>
     <span class="n">queue_max_size</span> <span class="o">=</span> <span class="mi">40</span>
     <span class="n">queue_time_length</span> <span class="o">=</span> <span class="mi">121</span>
+    <span class="n">retries_on_timeout</span> <span class="o">=</span> <span class="mi">5</span>
 
     <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># Singleton</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_instance</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
@@ -376,8 +381,24 @@
                     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_interval</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
-            <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                <span class="n">url</span><span class="p">,</span> <span class="n">cookies</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cookies</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+            <span class="c1"># handle network errors and GitHub downtimes</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">retries_on_timeout</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">cookies</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cookies</span><span class="p">,</span>
+                                     <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&lt;</span> <span class="mi">500</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">GitHubScrapingError</span><span class="p">(</span>
+                    <span class="s2">&quot;GitHub is not responding to requests. Try again later.&quot;</span><span class="p">)</span>
+
             <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">429</span><span class="p">:</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Hit GitHub XHR rate limit, retry in 10 seconds..&quot;</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -401,8 +422,8 @@
 <span class="sd">                of lines added, changed or deleted. Note that weeks are</span>
 <span class="sd">                started on Sunday and represented by a Unix timestamp.</span>
 
-<span class="sd">        &gt;&gt;&gt; Scraper().project_contributor_stats(&#39;pandas-dev/pandas&#39;)</span>
-<span class="sd">        [{u&#39;author&#39;: {u&#39;avatar&#39;: u&#39;https://avatars0.githubusercontent.com/u/1435085?s=60&amp;v=4&#39;,</span>
+<span class="sd">        &gt;&gt;&gt; Scraper().project_contributor_stats(&#39;pandas-dev/pandas&#39;) # doctest: +SKIP</span>
+<span class="sd">        [{u&#39;author&#39;: {u&#39;avatar&#39;: u&#39;https://avatars0.githubusercontent.com/...&#39;,</span>
 <span class="sd">           u&#39;hovercard_url&#39;: u&#39;/hovercards?user_id=1435085&#39;,</span>
 <span class="sd">           u&#39;id&#39;: 1435085,</span>
 <span class="sd">           u&#39;login&#39;: u&#39;blbradley&#39;,</span>
