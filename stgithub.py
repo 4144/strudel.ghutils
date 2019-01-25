@@ -413,6 +413,8 @@ class Scraper(object):
                 continue
             else:
                 return res
+        raise GitHubScrapingError(
+            "GitHub returns empty responses. Try again later.")
 
     def user_daily_contrib_num(self, user, year):
         # type: (str, int) -> dict
