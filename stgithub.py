@@ -67,8 +67,12 @@ HEADERS = {   # browser headers for non-API URLs
 }
 
 
+class GitHubScrapingError(requests.HTTPError):
+    pass
+
+
 def normalize_text(string):
-    # type: (str) -> str
+    # type: (six.string_types) -> six.string_types
     """ Normalize spaces and newlines
     >>> normalize_text("\\nHello   world  \\t\\n!")
     'Hello world!'
@@ -77,7 +81,7 @@ def normalize_text(string):
 
 
 def extract_repo(link):
-    # type: (str) -> str
+    # type: (six.string_types) -> six.string_types
     """ Extract repository slug from a GitHub link
 
     >>> extract_repo("/org/repo/blabla?something=foo")
@@ -315,6 +319,7 @@ class Scraper(object):
     # after many experiments, 40/121 looks to be the fastest option
     queue_max_size = 40
     queue_time_length = 121
+    retries_on_timeout = 5
 
     def __new__(cls, *args, **kwargs):  # Singleton
         if not isinstance(cls._instance, cls):
@@ -341,8 +346,24 @@ class Scraper(object):
                     time.sleep(sleep_interval)
 
             self.queue.put(time.time())
-            r = requests.get(
-                url, cookies=self.cookies, headers=headers, params=params)
+
+            # handle network errors and GitHub downtimes
+            r = None
+            for _ in range(self.retries_on_timeout):
+                try:
+                    r = requests.get(url, cookies=self.cookies,
+                                     headers=headers, params=params)
+                except requests.exceptions.RequestException:
+                    continue
+                if r.status_code < 500:
+                    break
+                else:
+                    r = None
+
+            if r is None:
+                raise GitHubScrapingError(
+                    "GitHub is not responding to requests. Try again later.")
+
             if r.status_code == 429:
                 logging.info("Hit GitHub XHR rate limit, retry in 10 seconds..")
                 time.sleep(10)
@@ -366,8 +387,8 @@ class Scraper(object):
                 of lines added, changed or deleted. Note that weeks are
                 started on Sunday and represented by a Unix timestamp.
 
-        >>> Scraper().project_contributor_stats('pandas-dev/pandas')
-        [{u'author': {u'avatar': u'https://avatars0.githubusercontent.com/u/1435085?s=60&v=4',
+        >>> Scraper().project_contributor_stats('pandas-dev/pandas') # doctest: +SKIP
+        [{u'author': {u'avatar': u'https://avatars0.githubusercontent.com/...',
            u'hovercard_url': u'/hovercards?user_id=1435085',
            u'id': 1435085,
            u'login': u'blbradley',
