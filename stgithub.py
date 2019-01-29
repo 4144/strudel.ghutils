@@ -80,6 +80,12 @@ def normalize_text(string):
     return " ".join(string.split())
 
 
+def _int(value):
+    if isinstance(value, six.string_types):
+        value = value.replace(",", "")
+    return int(value)
+
+
 def extract_repo(link):
     # type: (six.string_types) -> six.string_types
     """ Extract repository slug from a GitHub link
@@ -120,52 +126,64 @@ def _parse_timeline_update_record(record_div):
         # reviewed pull requests
         title = normalize_text(record_div.button.text)
         if re.match(
-                r'Reviewed \d+ pull requests? in \d+ repositor(y|ies)', title):
+                r'Reviewed \d[\d,]* pull requests? in \d+ repositor(y|ies)', title):
 
             for repo_div in record_div.find_all(
                     'div', class_='profile-rollup-summarized'):
-                repo_span, count_span = repo_div.button.find_all('span')
-                repo = repo_span.text
-                count = int(count_span.text.split()[0])
+                repo_div_button = repo_div.button
+                if not repo_div_button:
+                    # "N repositories not shown"
+                    continue
+                repo_span, count_span = repo_div_button.find_all('span')
+                repo = repo_span.text.strip()
+                count = _int(count_span.text.split()[0])
                 record_data[repo]['reviews'] += count
 
-        elif re.match(r'Opened \d+ (?:other )?issues? in \d+ repositor(y|ies)',
+        elif re.match(r'Opened \d[\d,]* (?:other )?issues? in \d+ repositor(y|ies)',
                       title):
             for repo_div in record_div.find_all(
                     'div', class_='profile-rollup-summarized'):
-                repo = repo_div.button.div.span.text
+                repo_div_button = repo_div.button
+                if not repo_div_button:
+                    # "N repositories not shown"
+                    continue
+                repo = repo_div_button.div.span.text.strip()
                 count = 0
                 count_span = repo_div.button.find_all(
                     'span', recursive=False)[0]
                 for span in count_span.find_all('span'):
-                    count += int(span.text)
+                    count += _int(span.text)
                 record_data[repo]['issues'] += count
 
-        elif re.match(r'Created \d+ (?:other )?repositor(y|ies)', title):
+        elif re.match(r'Created \d[\d,]* (?:other )?repositor(y|ies)', title):
             for link in record_div.find_all(
                     'a', attrs={'data-hovercard-type': "repository"}):
                 record_data[link.text]['created_repository'] = 1
 
-        elif re.match(r'Opened \d+ (?:other )?pull requests? '
+        elif re.match(r'Opened \d[\d,]* (?:other )?pull requests? '
                       r'in \d+ repositor(y|ies)', title):
             for repo_div in record_div.find_all(
                     'div', class_='profile-rollup-summarized'):
-                repo = repo_div.button.div.span.text
+                repo_div_button = repo_div.button
+                if not repo_div_button:
+                    # "N repositories not shown"
+                    continue
+                repo = repo_div_button.div.span.text.strip()
                 count = 0
                 count_span = repo_div.button.find_all('span', recursive=False)[
                     0]
                 for span in count_span.find_all('span'):
-                    count += int(span.text)
+                    count += _int(span.text)
                 record_data[repo]['pull_requests'] += count
 
-        elif re.match(r'Created \d+ commits? in \d+ repositor(y|ies)', title):
+        elif re.match(r'Created \d[\d,]* commits? in \d+ repositor(y|ies)', title):
             for repo_li in record_div.ul.find_all('li', recursive=False):
                 li_div = repo_li.div
                 if not li_div:
                     continue  # "N repositories not shown"
                 repo_link = li_div.find_all('a', recursive=False)[1]
                 repo = extract_repo(repo_link["href"])
-                count = int(repo_link.text.strip().split(" ")[0])
+                count = _int(repo_link.text.strip().split(" ")[0])
                 record_data[repo]['commits'] += count
 
         else:
@@ -203,7 +221,7 @@ def _parse_timeline_update_record(record_div):
         # private activity
         title = normalize_text(record_div.find_all('span')[1].text)
         if title.endswith(' in private repositories'):
-            record_data[None]['private_contrib'] += int(title.split(" ", 1)[0])
+            record_data[None]['private_contrib'] += _int(title.split(" ", 1)[0])
         else:
             raise ValueError("Unexpected title: " + title)
     else:
@@ -242,7 +260,14 @@ def _parse_timeline_update(bs4_tree):
         record_month = None
         month_data = {}
         for record_div in month_div.find_all("div", class_="profile-rollup-wrapper"):
-            parsed_record = _parse_timeline_update_record(record_div)
+            try:
+                parsed_record = _parse_timeline_update_record(record_div)
+            except:
+                logging.error("Failed to parse record. Please contact the "
+                              "maintainer and send the following HTML, along "
+                              "with the user profile you're scraping:")
+                logging.error(record_div.prettify())
+                raise
             if not parsed_record:  # ignore empty months
                 continue
             for record_repo, record_activity in parsed_record.items():
@@ -442,7 +467,7 @@ class Scraper(object):
         year = str(year)
         tree = ElementTree.fromstring(self._request(url).text)
 
-        return {rect.attrib['data-date']: int(rect.attrib.get('data-count'))
+        return {rect.attrib['data-date']: _int(rect.attrib.get('data-count'))
                 for rect in tree.iter('rect')
                 if rect.attrib.get('class') == 'day'
                 and rect.attrib.get('data-date', '').startswith(year)}
