@@ -155,7 +155,8 @@ def _parse_timeline_update_record(record_div):
                     count += _int(span.text)
                 record_data[repo]['issues'] += count
 
-        elif re.match(r'Created \d[\d,]* (?:other )?repositor(y|ies)', title):
+        elif re.match(r'Created \d[\d,]*\+? (?:other )?repositor(y|ies)', title):
+            # e.g. Created 100+ repositories
             for link in record_div.find_all(
                     'a', attrs={'data-hovercard-type': "repository"}):
                 record_data[link.text]['created_repository'] = 1
