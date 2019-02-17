@@ -466,7 +466,14 @@ class Scraper(object):
         url = "/users/%s/contributions?from=%d-12-01&to=%d-12-31&full_graph=1" \
               % (user, year, year)
         year = str(year)
-        tree = ElementTree.fromstring(self._request(url).text)
+        start_token = '<svg'
+        stop_token = '/svg>'
+        response_text = self._request(url).text
+        # cut out first <svg> element,
+        # since HTML outside of it is sometimes malformed
+        response_text = start_token + response_text.split(
+            start_token, 1)[-1].split(stop_token, 1)[0] + stop_token
+        tree = ElementTree.fromstring(response_text)
 
         return {rect.attrib['data-date']: _int(rect.attrib.get('data-count'))
                 for rect in tree.iter('rect')
@@ -523,6 +530,11 @@ class Scraper(object):
     def full_user_activity_timeline(self, user, start=None, to=None):
         # type: (str, str, str) -> Generator[Tuple[str, Dict]]
         """ Get a list of public user contributions, by month by repository.
+
+        .. note: User timeline sometimes does not include all contributions.
+            E.g., this issue is not reflected in the reporter timeline:
+            https://github.com/GoogleCloudPlatform/webapp2/issues/104
+            Maybe, it
 
         Args:
             user (str): GitHub login of the user to get activity for.
