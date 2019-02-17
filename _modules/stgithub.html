@@ -115,6 +115,12 @@
     <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
 
 
+<span class="k">def</span> <span class="nf">_int</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+
 <span class="k">def</span> <span class="nf">extract_repo</span><span class="p">(</span><span class="n">link</span><span class="p">):</span>
     <span class="c1"># type: (six.string_types) -&gt; six.string_types</span>
     <span class="sd">&quot;&quot;&quot; Extract repository slug from a GitHub link</span>
@@ -155,52 +161,65 @@
         <span class="c1"># reviewed pull requests</span>
         <span class="n">title</span> <span class="o">=</span> <span class="n">normalize_text</span><span class="p">(</span><span class="n">record_div</span><span class="o">.</span><span class="n">button</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
-                <span class="sa">r</span><span class="s1">&#39;Reviewed \d+ pull requests? in \d+ repositor(y|ies)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+                <span class="sa">r</span><span class="s1">&#39;Reviewed \d[\d,]* pull requests? in \d+ repositor(y|ies)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
 
             <span class="k">for</span> <span class="n">repo_div</span> <span class="ow">in</span> <span class="n">record_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span>
                     <span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;profile-rollup-summarized&#39;</span><span class="p">):</span>
-                <span class="n">repo_span</span><span class="p">,</span> <span class="n">count_span</span> <span class="o">=</span> <span class="n">repo_div</span><span class="o">.</span><span class="n">button</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">)</span>
-                <span class="n">repo</span> <span class="o">=</span> <span class="n">repo_span</span><span class="o">.</span><span class="n">text</span>
-                <span class="n">count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">count_span</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">repo_div_button</span> <span class="o">=</span> <span class="n">repo_div</span><span class="o">.</span><span class="n">button</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">repo_div_button</span><span class="p">:</span>
+                    <span class="c1"># &quot;N repositories not shown&quot;</span>
+                    <span class="k">continue</span>
+                <span class="n">repo_span</span><span class="p">,</span> <span class="n">count_span</span> <span class="o">=</span> <span class="n">repo_div_button</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">)</span>
+                <span class="n">repo</span> <span class="o">=</span> <span class="n">repo_span</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="n">_int</span><span class="p">(</span><span class="n">count_span</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="n">record_data</span><span class="p">[</span><span class="n">repo</span><span class="p">][</span><span class="s1">&#39;reviews&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">count</span>
 
-        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Opened \d+ (?:other )?issues? in \d+ repositor(y|ies)&#39;</span><span class="p">,</span>
+        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Opened \d[\d,]* (?:other )?issues? in \d+ repositor(y|ies)&#39;</span><span class="p">,</span>
                       <span class="n">title</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">repo_div</span> <span class="ow">in</span> <span class="n">record_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span>
                     <span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;profile-rollup-summarized&#39;</span><span class="p">):</span>
-                <span class="n">repo</span> <span class="o">=</span> <span class="n">repo_div</span><span class="o">.</span><span class="n">button</span><span class="o">.</span><span class="n">div</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">text</span>
+                <span class="n">repo_div_button</span> <span class="o">=</span> <span class="n">repo_div</span><span class="o">.</span><span class="n">button</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">repo_div_button</span><span class="p">:</span>
+                    <span class="c1"># &quot;N repositories not shown&quot;</span>
+                    <span class="k">continue</span>
+                <span class="n">repo</span> <span class="o">=</span> <span class="n">repo_div_button</span><span class="o">.</span><span class="n">div</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                 <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="n">count_span</span> <span class="o">=</span> <span class="n">repo_div</span><span class="o">.</span><span class="n">button</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span>
                     <span class="s1">&#39;span&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">for</span> <span class="n">span</span> <span class="ow">in</span> <span class="n">count_span</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">):</span>
-                    <span class="n">count</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">span</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="n">_int</span><span class="p">(</span><span class="n">span</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
                 <span class="n">record_data</span><span class="p">[</span><span class="n">repo</span><span class="p">][</span><span class="s1">&#39;issues&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">count</span>
 
-        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Created \d+ (?:other )?repositor(y|ies)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Created \d[\d,]*\+? (?:other )?repositor(y|ies)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+            <span class="c1"># e.g. Created 100+ repositories</span>
             <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">record_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span>
                     <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;data-hovercard-type&#39;</span><span class="p">:</span> <span class="s2">&quot;repository&quot;</span><span class="p">}):</span>
                 <span class="n">record_data</span><span class="p">[</span><span class="n">link</span><span class="o">.</span><span class="n">text</span><span class="p">][</span><span class="s1">&#39;created_repository&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 
-        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Opened \d+ (?:other )?pull requests? &#39;</span>
+        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Opened \d[\d,]* (?:other )?pull requests? &#39;</span>
                       <span class="sa">r</span><span class="s1">&#39;in \d+ repositor(y|ies)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">repo_div</span> <span class="ow">in</span> <span class="n">record_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span>
                     <span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;profile-rollup-summarized&#39;</span><span class="p">):</span>
-                <span class="n">repo</span> <span class="o">=</span> <span class="n">repo_div</span><span class="o">.</span><span class="n">button</span><span class="o">.</span><span class="n">div</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">text</span>
+                <span class="n">repo_div_button</span> <span class="o">=</span> <span class="n">repo_div</span><span class="o">.</span><span class="n">button</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">repo_div_button</span><span class="p">:</span>
+                    <span class="c1"># &quot;N repositories not shown&quot;</span>
+                    <span class="k">continue</span>
+                <span class="n">repo</span> <span class="o">=</span> <span class="n">repo_div_button</span><span class="o">.</span><span class="n">div</span><span class="o">.</span><span class="n">span</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                 <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
                 <span class="n">count_span</span> <span class="o">=</span> <span class="n">repo_div</span><span class="o">.</span><span class="n">button</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span>
                     <span class="mi">0</span><span class="p">]</span>
                 <span class="k">for</span> <span class="n">span</span> <span class="ow">in</span> <span class="n">count_span</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">):</span>
-                    <span class="n">count</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">span</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                    <span class="n">count</span> <span class="o">+=</span> <span class="n">_int</span><span class="p">(</span><span class="n">span</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
                 <span class="n">record_data</span><span class="p">[</span><span class="n">repo</span><span class="p">][</span><span class="s1">&#39;pull_requests&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">count</span>
 
-        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Created \d+ commits? in \d+ repositor(y|ies)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Created \d[\d,]* commits? in \d+ repositor(y|ies)&#39;</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">repo_li</span> <span class="ow">in</span> <span class="n">record_div</span><span class="o">.</span><span class="n">ul</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
                 <span class="n">li_div</span> <span class="o">=</span> <span class="n">repo_li</span><span class="o">.</span><span class="n">div</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">li_div</span><span class="p">:</span>
                     <span class="k">continue</span>  <span class="c1"># &quot;N repositories not shown&quot;</span>
                 <span class="n">repo_link</span> <span class="o">=</span> <span class="n">li_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
                 <span class="n">repo</span> <span class="o">=</span> <span class="n">extract_repo</span><span class="p">(</span><span class="n">repo_link</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">])</span>
-                <span class="n">count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">repo_link</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="n">_int</span><span class="p">(</span><span class="n">repo_link</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="n">record_data</span><span class="p">[</span><span class="n">repo</span><span class="p">][</span><span class="s1">&#39;commits&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">count</span>
 
         <span class="k">else</span><span class="p">:</span>
@@ -238,7 +257,7 @@
         <span class="c1"># private activity</span>
         <span class="n">title</span> <span class="o">=</span> <span class="n">normalize_text</span><span class="p">(</span><span class="n">record_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">title</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39; in private repositories&#39;</span><span class="p">):</span>
-            <span class="n">record_data</span><span class="p">[</span><span class="kc">None</span><span class="p">][</span><span class="s1">&#39;private_contrib&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">title</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">record_data</span><span class="p">[</span><span class="kc">None</span><span class="p">][</span><span class="s1">&#39;private_contrib&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">_int</span><span class="p">(</span><span class="n">title</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unexpected title: &quot;</span> <span class="o">+</span> <span class="n">title</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
@@ -277,7 +296,14 @@
         <span class="n">record_month</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">month_data</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">record_div</span> <span class="ow">in</span> <span class="n">month_div</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;div&quot;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&quot;profile-rollup-wrapper&quot;</span><span class="p">):</span>
-            <span class="n">parsed_record</span> <span class="o">=</span> <span class="n">_parse_timeline_update_record</span><span class="p">(</span><span class="n">record_div</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">parsed_record</span> <span class="o">=</span> <span class="n">_parse_timeline_update_record</span><span class="p">(</span><span class="n">record_div</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to parse record. Please contact the &quot;</span>
+                              <span class="s2">&quot;maintainer and send the following HTML, along &quot;</span>
+                              <span class="s2">&quot;with the user profile you&#39;re scraping:&quot;</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">record_div</span><span class="o">.</span><span class="n">prettify</span><span class="p">())</span>
+                <span class="k">raise</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed_record</span><span class="p">:</span>  <span class="c1"># ignore empty months</span>
                 <span class="k">continue</span>
             <span class="k">for</span> <span class="n">record_repo</span><span class="p">,</span> <span class="n">record_activity</span> <span class="ow">in</span> <span class="n">parsed_record</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -475,9 +501,16 @@
         <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;/users/</span><span class="si">%s</span><span class="s2">/contributions?from=</span><span class="si">%d</span><span class="s2">-12-01&amp;to=</span><span class="si">%d</span><span class="s2">-12-31&amp;full_graph=1&quot;</span> \
               <span class="o">%</span> <span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
         <span class="n">year</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
-        <span class="n">tree</span> <span class="o">=</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">start_token</span> <span class="o">=</span> <span class="s1">&#39;&lt;svg&#39;</span>
+        <span class="n">stop_token</span> <span class="o">=</span> <span class="s1">&#39;/svg&gt;&#39;</span>
+        <span class="n">response_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+        <span class="c1"># cut out first &lt;svg&gt; element,</span>
+        <span class="c1"># since HTML outside of it is sometimes malformed</span>
+        <span class="n">response_text</span> <span class="o">=</span> <span class="n">start_token</span> <span class="o">+</span> <span class="n">response_text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
+            <span class="n">start_token</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">stop_token</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">stop_token</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response_text</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="p">{</span><span class="n">rect</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;data-date&#39;</span><span class="p">]:</span> <span class="nb">int</span><span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data-count&#39;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">rect</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;data-date&#39;</span><span class="p">]:</span> <span class="n">_int</span><span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data-count&#39;</span><span class="p">))</span>
                 <span class="k">for</span> <span class="n">rect</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s1">&#39;rect&#39;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">rect</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;class&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;day&#39;</span>
                 <span class="ow">and</span> <span class="n">rect</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data-date&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">year</span><span class="p">)}</span></div>
@@ -532,6 +565,11 @@
 <div class="viewcode-block" id="Scraper.full_user_activity_timeline"><a class="viewcode-back" href="../index.html#stgithub.Scraper.full_user_activity_timeline">[docs]</a>    <span class="k">def</span> <span class="nf">full_user_activity_timeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="c1"># type: (str, str, str) -&gt; Generator[Tuple[str, Dict]]</span>
         <span class="sd">&quot;&quot;&quot; Get a list of public user contributions, by month by repository.</span>
+
+<span class="sd">        .. note: User timeline sometimes does not include all contributions.</span>
+<span class="sd">            E.g., this issue is not reflected in the reporter timeline:</span>
+<span class="sd">            https://github.com/GoogleCloudPlatform/webapp2/issues/104</span>
+<span class="sd">            Maybe, it</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            user (str): GitHub login of the user to get activity for.</span>
@@ -701,7 +739,7 @@
       &copy;2019, Marat (@cmu.edu).
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
