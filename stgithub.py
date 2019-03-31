@@ -83,6 +83,10 @@ def normalize_text(string):
 def _int(value):
     if isinstance(value, six.string_types):
         value = value.replace(",", "")
+        if value.endswith('k'):
+            # in the detailed list, large numbers are reduced
+            # to something like "1.7k"
+            value = float(value[:-1]) * 1000
     return int(value)
 
 
@@ -374,6 +378,7 @@ class Scraper(object):
             self.queue.put(time.time())
 
             # handle network errors and GitHub downtimes
+            # also, internal errors, like joshaber March 2015
             r = None
             for _ in range(self.retries_on_timeout):
                 try:
