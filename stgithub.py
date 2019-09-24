@@ -357,7 +357,7 @@ class Scraper(object):
         return cls._instance
 
     def __init__(self):
-        self.cookies = requests.get(BASE_URL).cookies
+        self.session = requests.Session()
         self.queue = six.moves.queue.Queue(maxsize=self.queue_max_size)
 
     @guard
@@ -382,8 +382,7 @@ class Scraper(object):
             r = None
             for _ in range(self.retries_on_timeout):
                 try:
-                    r = requests.get(url, cookies=self.cookies,
-                                     headers=headers, params=params)
+                    r = self.session.get(url, headers=headers, params=params)
                 except requests.exceptions.RequestException:
                     time.sleep(1)
                     continue
